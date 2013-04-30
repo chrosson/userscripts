@@ -244,6 +244,9 @@ body:before {/* thanks to Maleika (Kohoutec)*/
   height: 30px;
   width: 30px;
 
+  text-align: center;
+  line-height: 25px;
+
   -moz-border-radius: 15px;
   -webkit-border-radius: 15px;
   border-radius: 15px;
@@ -348,13 +351,13 @@ body:before {/* thanks to Maleika (Kohoutec)*/
   max-width: 100%;
   }
 
-.post-content a {
+.post-content a, .article-link {
   border-bottom: 1px dashed #C3CCD0;
   font-weight: bolder;
   color: #90BB74;
   }
 
-.post-content a:hover {
+.post-content a:hover, .article-link {
   color: #73955C;
   }
 
