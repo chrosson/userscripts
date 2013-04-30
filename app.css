@@ -106,7 +106,7 @@ h5 { font-size: 13px; }
 h6 { font-size: 11px; font-weight: normal; }
 
 p {
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1.5em;
   margin-bottom: 0px; 
   margin-top: 10px;
@@ -301,7 +301,7 @@ body:before {/* thanks to Maleika (Kohoutec)*/
   padding: 50px 80px;
   font-family: 'OpenSans', sans-serif;
   font-weight: normal;
-  font-size: 16px;
+  font-size: 14px;
   border: 1px solid #C3CCD0;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0),0 0 10px rgba(0, 0, 0, 0.1);
   background: #fff;
@@ -363,7 +363,7 @@ body:before {/* thanks to Maleika (Kohoutec)*/
   
 .post-content code {
   font-family: Menlo, monospace;
-  padding: 4px;
+  padding: 2px;
   border-radius: 3px;
   font-size: 12px;
   border: 1px solid #C3CCD0;
