@@ -8,17 +8,15 @@ categories:
 - articles
 ---
 
-*Definitions and ideas*
-
-* attribute: Given a link element `<a href="http://www.google.com">google</a>` the `href="http://www.google.com"` means the `href` attribute has been assigned to the value `http://www.google.com`. Attributes are a fundamental part of an element and are initially set in the page source, though they may later be later added/deleted/modified with Javascript. You can see current element attributes by opening the element inspector in chrome (or firebug in firefox etc).
+### Definitions and ideas
+* attribute: this is a link - `<a href="http://www.google.com">google</a>`. `href="http://www.google.com"` means the `href` attribute has been assigned to the value `http://www.google.com`. Attributes are a initially set in the page source and may later be later added/deleted/modified with Javascript. You can see current element attributes by opening the element inspector in chrome (or firebug in firefox etc).
 * DOM tree: the tree of elements the browser represents a page as. Open your favorite page inspection tool - notice theres a single 'root' element and you can expand that to get elements underneath (contained within) that element. There are no loops. Keep this in the back of your mind.
 
-*Know thy history - jQuery the selector*
-
+### Know thy history - jQuery the selector
 CSS is the way browsers know which elements to apply which 'styles' to. To do this it needs to have rules about how to find elements...after all, you need to be able to specify different font sizes for your headings and body text.  
 To this end a set of 'rule formats' or 'selectors' were defined to let browsers know how to find what. jQuery uses all of these rule formats and adds a sprinking of its own. Wherever I mention a CSS selector, it's something you can use to find an element with jQuery.
 
-### Get your elements
+# Get your elements
 
 There are 4 fundamental selectors in CSS.
 
@@ -36,7 +34,7 @@ These (well, the first 3) are absolutely essential. Know them. Other important s
 [The jQuery selector documentation](http://api.jquery.com/category/selectors/) is your bible. Look at it often. I do.
 [This page](http://net.tutsplus.com/tutorials/html-css-techniques/the-30-css-selectors-you-must-memorize/) is probably a good idea to look through to give you an idea of what's available.
 
-### Example
+## Example
 
 Let's think about [the list of all my posts](http://www.thestudentroom.co.uk/search.php?do=finduser&u=334116) and see how we can get all the links elements to them.
 
