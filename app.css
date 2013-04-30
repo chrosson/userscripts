@@ -350,7 +350,12 @@ body:before {/* thanks to Maleika (Kohoutec)*/
 
 .post-content a {
   border-bottom: 1px dashed #C3CCD0;
-  font-weight: normal;
+  font-weight: 700;
+  color: #90BB74;
+  }
+
+.post-content a:hover {
+  color: #73955C;
   }
 
 .post-content p {
