@@ -47,7 +47,7 @@ html {
   Typography
 ---------------------------------------------*/
 html,body {
-  color: #7A8387;
+  color: #57676e;
   background: #e7eef2;
   -webkit-font-smoothing: antialiased;
   height: 100%;
@@ -350,7 +350,7 @@ body:before {/* thanks to Maleika (Kohoutec)*/
 
 .post-content a {
   border-bottom: 1px dashed #C3CCD0;
-  font-weight: 700;
+  font-weight: bolder;
   color: #90BB74;
   }
 
