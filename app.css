@@ -259,7 +259,7 @@ body:before {/* thanks to Maleika (Kohoutec)*/
 }
 
 .article-wrapper {
-  background: #fff;
+  background: rgb(248, 248, 248);
   padding-bottom: 50px;
 }
 
@@ -296,12 +296,15 @@ body:before {/* thanks to Maleika (Kohoutec)*/
 }
 
 .post-content {
-  width: 800px;
+  width: 900px;
   margin: 0px auto;
-  padding: 20px 0;
+  padding: 20px 50px;
   font-family: 'OpenSans', sans-serif;
   font-weight: normal;
   font-size: 16px;
+  border: 1px solid #C3CCD0;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0),0 0 10px rgba(0, 0, 0, 0.1);
+  background: #fff;
   }
 
 .post-content * {
