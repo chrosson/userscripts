@@ -20,7 +20,7 @@ prose:
       - articles
     _posts/lessons: |
       published: false
-      layout: default
+      layout: article
       title: Your Post Title
       abstract: Short summary of your article.
       author_twitter: johndoe
