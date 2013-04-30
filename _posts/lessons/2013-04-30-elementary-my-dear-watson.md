@@ -1,5 +1,4 @@
 ---
-layout: lesson
 title: Lesson 1 - Elementary my dear watson
 published: true
 ---
