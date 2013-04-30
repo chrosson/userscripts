@@ -3,7 +3,6 @@ published: true
 layout: article
 title: Lesson 1 - Elementary my dear watson
 abstract: You need elements. jQuery gets you elements.
-author_twitter: johndoe
 author: Chrosson
 categories:
 - articles
