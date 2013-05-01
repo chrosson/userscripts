@@ -9,12 +9,13 @@ categories:
 ---
 
 ### Definitions and ideas
-* attribute: this is a link - `<a href="http://www.google.com">google</a>`. `href="http://www.google.com"` means the `href` attribute has been assigned to the value `http://www.google.com`. Attributes are a initially set in the page source and may later be later added/deleted/modified with Javascript. You can see current element attributes by opening the element inspector in chrome (or firebug in firefox etc).
+* Attribute: this is a link - `<a href="http://www.google.com">google</a>`. `href="http://www.google.com"` means the `href` attribute has been assigned to the value `http://www.google.com`. Attributes are a initially set in the page source and may later be later added/deleted/modified with Javascript. You can see current element attributes by opening the element inspector in chrome (or firebug in firefox etc).
 * DOM tree: the tree of elements the browser represents a page as. Open your favorite page inspection tool - notice theres a single 'root' element and you can expand that to get elements underneath (contained within) that element. There are no loops. Keep this in the back of your mind.
 
 ### Know thy history - jQuery the selector
-CSS is the way browsers know which elements to apply which 'styles' to. To do this it needs to have rules about how to find elements...after all, you need to be able to specify different font sizes for your headings and body text.  
-To this end a set of 'rule formats' or 'selectors' were defined to let browsers know how to find what. jQuery uses all of these rule formats and adds a sprinking of its own. Wherever I mention a CSS selector, it's something you can use to find an element with jQuery.
+CSS is the way browsers know how to apply 'styles' to elements. At its heart is a way of choosing elements - a font size of 20px is useless without the browser knowing it's only for headings.
+
+'Selectors' were defined to do this - think of them as templates to fill in to create actual CSS rules. jQuery supports all CSS selectors (and adds a sprinking of its own). Any mention of 'selector' is therefore something you can use to find an element with jQuery - just use `jQuery('selector')`, or the shorter version `$('selector')`.
 
 # Get your elements
 
