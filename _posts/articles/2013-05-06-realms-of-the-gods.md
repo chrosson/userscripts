@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 layout: article
 title: Lesson 2 - The realms of the Gods
 abstract: Short summary of your article.
