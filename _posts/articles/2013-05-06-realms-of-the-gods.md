@@ -27,19 +27,19 @@ A: DOM manipulation.
 
 Pretend the DOM (i.e. the webpage) is a car. DOM manipulation allows us to rebuild the page in the form of a tank, or a batmobile. Or, if we do it wrong, leave it in pieces on the floor. And to try again, we can just refresh the page. Specifically, DOM manipulation allows us to add and remove elements, move them around on the page, change their attributes...shape the page exactly as we want it.
 
-Javascript does allow DOM manipulation but, to paraphrase an unknown person, 'writing javascript always feels like a hack'.
+Javascript does allow DOM manipulation but, to paraphrase an unknown person, 'writing javascript always feels like a hack'.  
 ```
 var span = document.createElement('span');
 span.style.fontSize = '20px';
 span.textContent = 'This is a span';
 document.body.appendChild(span);
-```
+```  
 ```
 $('<span>')
     .css('font-size', '20px')
     .text('This is a span')
     .appendTo('body');
-```
+```  
 (the second can be expressed on one line - I've split it for readability and to demonstrate a 1 to 1 mapping from the top to bottom)
 
 They're both equivalent - they create a span element, make the font size 20, set the text and put it in the body of the html document. You decide which you prefer. At minimum, the second requires less typing.
