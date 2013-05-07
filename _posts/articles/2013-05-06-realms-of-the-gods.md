@@ -54,15 +54,15 @@ We're going to play around a bit to see what we can do with jQuery. Let's start 
 Surprise surprise, this removes all of those links we looked so hard for last time. Note we get a list in the console output - this is what allows us to 'chain' jQuery commands. So...
 
 `$('#search_results a[href^="showthread"]').remove().text()`  
-We have chained on the 'text' command. We now remove the elements and get the text from them all. Note that we've got a string back in the JS console this time so we can't chain any more commands on the end. But how do we know when we can and can't!? Well, we look at the documentation - jQAPI gives '.remove(selector) → jQuery' and '.text() → String'. Well that makes sense - if we get a jQuery thing back, we can chain more jQuery commands on it. Careful though...
+We have chained on the `text` command. We now remove the elements and get the text from them all. Note that we've got a string back in the JS console this time so we can't chain any more commands on the end. But how do we know when we can and can't!? Well, we look at the documentation - jQAPI gives `.remove(selector) → jQuery` and `.text() → String`. Well that makes sense - if we get a jQuery thing back, we can chain more jQuery commands on it. Careful though...
 
 `$('#search_results a[href^="showthread"]').text('1234').css('color', 'red')`  
-Scroll down a bit on the page for the text command and we see '.text(textString) → jQuery'. jQuery behaves differently depending on what you want to do. Logically, if you're setting the text you might want to set something else. Let's move onto something more interesting...
+Scroll down a bit on the page for the text command and we see `.text(textString) → jQuery`. jQuery behaves differently depending on what you want to do. Logically, if you're setting the text you might want to set something else. Let's move onto something more interesting...
 
 	$('#search_results a[href^="showthread"]').map(function (i, elt) {
       return $(elt).attr('href')
     })
-We've got each of our link elements. We then use the map command...which apparently *Pass\[es\] each element in the current matched set through a function, producing a new jQuery object containing the return values.* Bit opaque. All we're doing is going through each element and getting the `href` attribute, i.e. where we link to. Note that to get jQuery functions on the plain DOM element we had to 'wrap' it in jQuery. We can actually rephrase the above:
+We've got each of our link elements. We then use the map command...which apparently *Pass\[es\] each element in the current matched set through a function, producing a new jQuery object containing the return values.* Bit opaque. All we're doing is going through each element and getting the `href` attribute, i.e. where we link to. Note that to get jQuery functions on the plain DOM element we had to wrap it in jQuery. We can actually rephrase the above:
 
     var eltList = $('#search_results a[href^="showthread"]');
     var hrefList = [];
