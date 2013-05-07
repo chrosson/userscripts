@@ -62,7 +62,7 @@ Scroll down a bit on the page for the text command and we see `.text(textString)
 	$('#search_results a[href^="showthread"]').map(function (i, elt) {
       return $(elt).attr('href')
     })
-We've got each of our link elements. We then use the map command...which apparently *Pass\[es\] each element in the current matched set through a function, producing a new jQuery object containing the return values.* Bit opaque. All we're doing is going through each element and getting the `href` attribute, i.e. where we link to. Note that to get jQuery functions on the plain DOM element we had to wrap it in jQuery. We can actually rephrase the above:
+We've got each of our link elements. We then use the map command...which apparently *"Pass\[es\] each element in the current matched set through a function, producing a new jQuery object containing the return values."* Bit opaque. All we're doing is going through each element and getting the `href` attribute, i.e. where we link to. Note that to get jQuery functions on the plain DOM element we had to wrap it in jQuery. We can actually rephrase the above:
 
     var eltList = $('#search_results a[href^="showthread"]');
     var hrefList = [];
