@@ -27,7 +27,7 @@ A: DOM manipulation.
 
 Pretend the DOM (i.e. the webpage) is a car. DOM manipulation allows us to rebuild the page in the form of a tank, or a batmobile. Or, if we do it wrong, leave it in pieces on the floor. And to try again, we can just refresh the page. Specifically, DOM manipulation allows us to add and remove elements, move them around on the page, change their attributes...shape the page exactly as we want it.
 
-Javascript does allow DOM manipulation but, to paraphrase an unknown person, 'writing javascript always feels like a hack'.
+Javascript does allow DOM manipulation but, to paraphrase an unknown person, 'writing javascript always [feels like a hack](http://stackoverflow.com/a/7327078/2352259)'.
 
     var span = document.createElement('span');
     span.style.fontSize = '20px';
@@ -62,7 +62,7 @@ Scroll down a bit on the page for the text command and we see '.text(textString)
 	$('#search_results a[href^="showthread"]').map(function (i, elt) {
       return $(elt).attr('href')
     })
-We've got each of our link elements. We then use the map command...which apparently 'Pass\[es\] each element in the current matched set through a function, producing a new jQuery object containing the return values.' Bit opaque. All we're doing is going through each element and getting the 'href' attribute, i.e. where we link to. Note that to get jQuery functions on the plain DOM element we had to 'wrap' it in jQuery. We can actually rephrase the above:
+We've got each of our link elements. We then use the map command...which apparently *Pass\[es\] each element in the current matched set through a function, producing a new jQuery object containing the return values.* Bit opaque. All we're doing is going through each element and getting the `href` attribute, i.e. where we link to. Note that to get jQuery functions on the plain DOM element we had to 'wrap' it in jQuery. We can actually rephrase the above:
 
     var eltList = $('#search_results a[href^="showthread"]');
     var hrefList = [];
@@ -85,7 +85,6 @@ Creates a link element to google with some text.
       .text('Big G')
       .insertBefore('#search_results a[href^="showthread"]')`
 At long last, we're putting things onto the page. Remember all the many manipulation commands (append, appendTo, prepend etc)? This one happens to do what we want - insert a copy of this link before each element returned by the selector. Now lets combine a little variation on the 'map' command we saw above and our construction here...
-
 
     $('#search_results a[href^="showthread"]').each(function (i, elt) {
       $('<a>').attr('href', elt.href).text('Linky').insertBefore(elt);
