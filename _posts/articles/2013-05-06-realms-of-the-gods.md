@@ -34,7 +34,8 @@ Javascript does allow DOM manipulation but, to paraphrase an unknown person, 'wr
     span.textContent = 'This is a span';
     document.body.appendChild(span);
 
-or  
+or
+
     $('<span>')
       .css('font-size', '20px')
       .text('This is a span')
