@@ -16,7 +16,7 @@ Once upon a time there was IE6 and it was very bad. Then came Firefox and it was
 
 The point of this story is to give you an idea of the scene for jQuery. Javascript was ([and sometimes still is](http://www.crockford.com/javascript/javascript.html)) considered a toy language. It was used for silly effects, not building a website. Part of the problem was the domination of IE6,7,8 for so long with such weak support for Javascript (modern browsers can be literally hundreds of times faster) and incompatibility with official specifications (and Firefox).
 
-jQuery offers *cross browser* functionality to make fundamental tasks work the same way everywhere. Using it gives you compatibility almost for free. It also gives convenience functions to make things easy for the developer. No wonder it's so popular. 1
+jQuery offers *cross browser* functionality to make fundamental tasks work the same way everywhere (note: it offers no support for building large-scale Javascript sites - it is not a 'framework'). Using it gives you compatibility almost for free. It also gives convenience functions to make things easy for the developer. No wonder it's so popular. 1
 
 Remember though, you're targeting (with userscripts) Chrome/Firefox, which typically do the right (i.e. standardised) thing. jQuery is more useful here for making readable code.
 
@@ -70,9 +70,11 @@ We've got each of our link elements. We then use the map command...which apparen
     }
 Let's move swiftly onwards - we'll come to a bit of background on what's happening above in the next lesson. Anyway, we haven't actually built anything yet - not much of a deity.
 
-`$('<a>')` - a link element. Note how it looks quite similar to the command to select all link elements. jQuery can only tell the difference because of the '<' and '>', so don't forget them.
+`$('<a>')`  
+A link element. Note how it looks quite similar to the command to select all link elements. jQuery can only tell the difference because of the '<' and '>', so don't forget them.
 
-`$('<a>').attr('href', 'http://www.google.com').text('Big G')` - creates a link element to google with some text.
+`$('<a>').attr('href', 'http://www.google.com').text('Big G')`  
+Creates a link element to google with some text.
 
     $('<a>')
       .attr('href', 'http://www.google.com')
@@ -86,5 +88,3 @@ At long last, we're putting things onto the page. Remember all the many manipula
     });
 Note that the above can be put on 5 lines (split the 'function' and '}' to a line and indent level by themselves) or 1 line, but I prefer this style. Go with whatever you find readable.  
 So what have we done? For 'each' element we've found, create a link element which links to the same link as to the thread link. Perhaps a bit of an anticlimax, but from here we know how to do something to each of a set of elements on a page.
-
-1 Note, however, that it offers no support for building large-scale Javascript sites - it is not a 'framework'.
