@@ -2,7 +2,7 @@
 published: true
 layout: article
 title: Lesson 2 - The realms of the Gods
-abstract: Short summary of your article.
+abstract: He saw it was sub-ideal. So He improved it.
 author: Chrosson
 categories:
 - articles
