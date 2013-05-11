@@ -75,15 +75,100 @@ function TSRAPI() {
 
   })();
 
+  // modified from https://code.google.com/p/x2js/source/browse/xml2json.js?r=857211ed56c68cb430f52aef367b96c447fd7b9f
+  var rss_parse = (function () {
+    function parseDOMChildren (node) {
+      if (node.nodeType == 9) { // Document node
+        var result = {};
+        var child = node.firstChild;
+        var childName = (child.localName == null) ? child.nodeName : child.nodeName;
+        result[childName] = parseDOMChildren(child);
+        return result;
+
+      } else if (node.nodeType == 3 || node.nodeType == 4) { // text or CDATA node
+        return node.nodeValue;
+
+      } else if (node.nodeType == 1) { // Element node
+        var result = { __cnt: 0 };
+        var nodeChildren = node.childNodes;
+
+        // Children nodes
+        for (var cidx=0; cidx < nodeChildren.length; cidx++) {
+          var child = nodeChildren.item(cidx); // nodeChildren[cidx];
+          var childName = (child.localName == null) ? child.nodeName : child.nodeName;
+
+          // TSR mappings
+          if (childName === 'dc:creator') { childName = 'creator'; }
+          else if (childName === 'content:encoded') { childName = 'content'; }
+          else if (childName === '#text' && child.nodeValue.replace(/^\s*$/, '') === '') { continue; }
+
+          result.__cnt++;
+          if (result[childName] == null) {
+            result[childName] = parseDOMChildren(child);
+            result[childName+"_asArray"] = [result[childName]];
+          } else {
+            if (!(result[childName] instanceof Array)) {
+              result[childName] = [result[childName]];
+              result[childName+"_asArray"] = result[childName];
+            }
+            var aridx = 0;
+            while(result[childName][aridx]!=null) { aridx++; }
+            result[childName][aridx] = parseDOMChildren(child);
+          }
+        }
+
+        // Attributes
+        for (var aidx=0; aidx < node.attributes.length; aidx++) {
+          var attr = node.attributes.item(aidx); // [aidx];
+          result.__cnt++;
+          result[attr.name]=attr.value;
+        }
+
+        if (result.__cnt == 1 && (result["#cdata-section"] || result["#text"])!=null) {
+          result = result["#cdata-section"] || result["#text"];
+        }
+
+        if (result["#text"]!=null) {
+          result.text = result["#text"];
+          delete result["#text"];
+          delete result["#text_asArray"];
+        }
+        if (result["#cdata-section"]!=null) {
+          result.__cdata = result["#cdata-section"];
+          delete result["#cdata-section"];
+          delete result["#cdata-section_asArray"];
+        }
+
+        return result;
+      }
+    }
+
+    return parseDOMChildren;
+  })();
+
   this.noapi = {
 
-    get_feed: function (lastpost, count, forumids) {
+    get_feed: function (lastpost, count, forumids, callback) {
+      if (typeof(forumids) === 'function') { callback = forumids; forumids = undefined; }
       /*
         http://www.thestudentroom.co.uk/external.php?type=rss2&lastpost=1&count=5
         lastpost: if true, order threads by last post, otherwise when created
         count: number of results
         forumids: optional, forum ids to return
       */
+      jQuery.ajax({
+        type: 'GET',
+        url: 'http://www.thestudentroom.co.uk/external.php?type=rss2&lastpost=' + lastpost +
+             '&count=' + count + (forumids ? '&forumids=' + forumids.join(',') : ''),
+        success: function (data, textStatus, jqXHR) {
+          var d = rss_parse(data);
+          if (!d.rss) { return alert("FAILED: " + d); }
+          callback(d);
+        },
+        error: function (jqXHR, textStatus, errorThrown) { alert("Failed to connect to TSR to get feed..."); },
+        dataType: "xml"
+      });
+
     }
   };
 
