@@ -5,7 +5,7 @@ function TSRAPI() {
   var utf8tob64 = function (str) { return btoa(unescape(encodeURIComponent(str))); };
   var b64toutf8 = function (str) { return decodeURIComponent(escape(atob(str))); };
 
-  var parse = (function () {
+  var mbq_parse = (function () {
 
     function handleStruct(elt) {
       var members = {};
@@ -231,7 +231,7 @@ function TSRAPI() {
               '<param><value><boolean>' + return_html + '</boolean></value></param>' +
               '</params></methodCall>',
         success: function (data, textStatus, jqXHR) {
-          var d = parse(data);
+          var d = mbq_parse(data);
           if (typeof(d.position) != 'number' || d.position < 0) { return alert("FAILED: " + d.topic_id); }
           callback(d);
         },
@@ -241,8 +241,6 @@ function TSRAPI() {
     }
 
   };
-
-
 
 }
 
