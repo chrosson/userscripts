@@ -21,7 +21,7 @@
 /*
 ======================INLINE_RESOURCE_BEGIN======================
 
-***********RESOURCE_START=tmpl1*************
+***********RESOURCE_START=postlist_tmpl*************
 
 <div id="streamline-view" ng-app="streamline" ng-cloak>
 
@@ -29,9 +29,19 @@
     Search: <input ng-model="query">
   </div>
 
-  <div ng-controller="PostListCtrl">
+  <div ng-controller="NewPostListCtrl">
     <div>
-      Search: <button ng-click="getThread()">Greet</button>
+      GetNewPosts <button ng-click="getPosts()">Greet</button>
+    </div>
+    <div ng-repeat="feedpost in feedposts" style="width: 120px; height: 120px; float: left; border-color: red; border-style: solid; margin: 3px;">
+      {{feedpost.creator}}
+      <p>{{feedpost.description}}</p>
+    </div>
+  </div>
+
+  <!--<div ng-controller="PostListCtrl">
+    <div>
+      GotThread <button ng-click="getThread()">Greet</button>
     </div>
     <ol>
       <li ng-repeat="post in posts | filter:query">
@@ -39,7 +49,7 @@
         <p>{{post.post_content}}</p>
       </li>
     </ol>
-  </div>
+  </div>-->
 
   Nothing here {{'yet' + '!'}} {{ 1 + 2 }}
 </div>
@@ -96,6 +106,7 @@
   var master = document.createElement('div');
 
   /******* ANGULAR BEGIN *******/
+
   // http://stackoverflow.com/questions/13937318/convert-angular-http-get-function-to-a-service
   // http://stackoverflow.com/questions/15666048/angular-js-service-vs-provide-vs-factory
   // http://stackoverflow.com/questions/13762228/confused-about-service-vs-factory
@@ -105,26 +116,44 @@
   app.controller('PostListCtrl', ['$scope', function ($scope) {
 
     $scope.posts = [
-      {"user": "Nexus S",
-       "text": "Fast just got faster with Nexus S."},
-      {"user": "Motorola XOOM™ with Wi-Fi",
-       "text": "The Next, Next Generation tablet."},
-      {"user": "MOTOROLA XOOM™",
-       "text": "The Next, Next Generation tablet."}
+      {"post_author_name": "Nexus S",
+       "post_content": "Fast just got faster with Nexus S."},
+      {"post_author_name": "Motorola XOOM™ with Wi-Fi",
+       "post_content": "The Next, Next Generation tablet."},
+      {"post_author_name": "MOTOROLA XOOM™",
+       "post_content": "The Next, Next Generation tablet."}
     ];
 
     $scope.getThread = function () {
-      api.mbq.get_thread("1820185", 0, 9, false, function (data) {
-        var posts = data.posts, l = posts.length, postsList = [];
-        $scope.posts = postsList;
+      api.mbq.get_thread("1820185", 0, 3, false, function (data) {
+        $scope.posts = data.posts;
         $scope.$apply();
       });
-      // http://www.thestudentroom.co.uk/external.php?type=rss2&lastpost=1&count=100
     };
 
   }]);
 
-  master.insertAdjacentHTML('afterbegin', resource['tmpl1']);
+  // http://oazabir.github.io/Droptiles/ - unknown license
+  // http://blog.sarasoueidan.com/windows8-animations/ - really slick, but noncommercial and attribution
+  // http://codepen.io/coolinfoforme/details/uAhzx#stats - looks like bsd?
+  // http://www.ryanlowdermilk.com/2012/03/windows-8-metro-tiles-with-html-css3-and-javascript/
+  // http://masonry.desandro.com/ - this this this
+
+  // http://www.thestudentroom.co.uk/external.php?type=rss2&lastpost=1&count=100
+  app.controller('NewPostListCtrl', ['$scope', function ($scope) {
+
+    $scope.feedposts = [];
+
+    $scope.getPosts = function () {
+      api.noapi.get_feed(true, 20, function (d) {
+        $scope.feedposts = d.rss.channel.item;
+        $scope.$apply();
+      });
+    };
+
+  }]);
+
+  master.insertAdjacentHTML('afterbegin', resource['postlist_tmpl']);
 
   document.body.insertAdjacentElement('afterbegin', master);
 
