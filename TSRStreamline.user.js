@@ -35,7 +35,7 @@
       Limit: <input type="range" min="0" max="100" ng-model="limit">
     </div>
     <div class="strmln-post-tiles">
-      <div class="strmln-post-tile" ng-repeat="feedpost in feedposts | limitTo:limit">
+      <div class="strmln-post-tile forum-{{feedpost.category.text | wordsToSnakeCase}}" ng-repeat="feedpost in feedposts | limitTo:limit">
         <div class="strmln-post-tile-content">
           {{feedpost.creator}}
           <p>{{feedpost.title}}</p>
@@ -44,7 +44,8 @@
       </div>
     </div>
     <div class="strmln-post-forums">
-      <div ng-repeat="feedpost in feedposts | limitTo:limit | uniqueCount:'category.domain' | orderBy:['-count','+category.text']">
+      <div category-hover="forum-{{feedpost.category.text | wordsToSnakeCase}}"
+           ng-repeat="feedpost in feedposts | limitTo:limit | uniqueCount:'category.domain' | orderBy:['-count','+category.text']">
         {{feedpost.count}} - <a href="{{feedpost.category.domain}}">{{feedpost.category.text}}</a>
       </div>
     </div>
@@ -75,6 +76,8 @@
   background-color: rgb(202, 202, 202);
   overflow-y: auto;
 }
+
+.highlight { background-color: blue; }
 
 .strmln-post-tiles  { position: absolute; right: 170px; left: 20px; font-size: 0; text-align: center; }
 .strmln-post-forums { position: absolute; width: 150px; right: 20px; }
@@ -195,6 +198,27 @@
       });
     };
 
+  }]);
+
+  app.directive('categoryHover', [function () {
+    return {
+      link: function ($scope, $element, attrs) {
+        $element.bind('mouseenter', function() {
+          angular.element('.' + attrs.categoryHover).addClass('highlight');
+          $element.addClass('highlight');
+        });
+        $element.bind('mouseleave', function() {
+          angular.element('.' + attrs.categoryHover).removeClass('highlight');
+          $element.removeClass('highlight');
+        });
+      }
+    }
+  }]);
+
+  app.filter('wordsToSnakeCase', [function () {
+    return function (words) {
+      return angular.lowercase(words.replace(/ /g, '-')).replace(/[^a-z_-]/, '');
+    }
   }]);
 
   // modified from https://github.com/angular-ui/ui-utils/blob/9fc207f9eefe93c6b772b1b3c7cf97144347f9ab/modules/unique/unique.js
