@@ -38,7 +38,8 @@
       <div class="strmln-post-tile" ng-repeat="feedpost in feedposts | limitTo:limit">
         <div class="strmln-post-tile-content">
           {{feedpost.creator}}
-          <p>{{feedpost.description}}</p>
+          <p>{{feedpost.title}}</p>
+          <p>{{feedpost.pubDate}}</p>
         </div>
       </div>
     </div>
