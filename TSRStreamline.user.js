@@ -44,8 +44,8 @@
       </div>
     </div>
     <div class="strmln-post-forums">
-      <div ng-repeat="feedpost in feedposts | limitTo:limit">
-        <a href="{{feedpost.category.domain}}">{{feedpost.category.text}}</a>
+      <div ng-repeat="feedpost in feedposts | limitTo:limit | uniqueCount:'category.domain' | orderBy:['-count','+category.text']">
+        {{feedpost.count}} - <a href="{{feedpost.category.domain}}">{{feedpost.category.text}}</a>
       </div>
     </div>
   </div>
@@ -179,6 +179,44 @@
       });
     };
 
+  }]);
+
+  // modified from https://github.com/angular-ui/ui-utils/blob/9fc207f9eefe93c6b772b1b3c7cf97144347f9ab/modules/unique/unique.js
+  app.filter('uniqueCount', ['$parse', function ($parse) {
+    return function (items, filterOn) {
+
+      if (filterOn === false) {
+        return items;
+      }
+
+      if ((filterOn || angular.isUndefined(filterOn)) && angular.isArray(items)) {
+        var hashCheck = {}, newItems = [],
+          get = angular.isString(filterOn) ? $parse(filterOn) : function (item) { return item };
+
+        var extractValueToCompare = function (item) {
+          return angular.isObject(item) ? get(item) : item;
+        };
+
+        angular.forEach(items, function (item) {
+          var valueToCheck, isDuplicate = false;
+
+          for (var i = 0; i < newItems.length; i++) {
+            if (angular.equals(extractValueToCompare(newItems[i]), extractValueToCompare(item))) {
+              isDuplicate = true;
+              newItems[i].count++;
+              break;
+            }
+          }
+          if (!isDuplicate) {
+            newItems.push(item);
+            item.count = 1;
+          }
+
+        });
+        items = newItems;
+      }
+      return items;
+    };
   }]);
 
   master.insertAdjacentHTML('afterbegin', resource['postlist_tmpl']);
