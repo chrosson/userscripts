@@ -34,11 +34,9 @@
       GetNewPosts <button ng-click="getPosts()">Greet</button>
     </div>
     <div class="strmln-post-tiles">
-      <div>
       <div ng-repeat="feedpost in feedposts">
         {{feedpost.creator}}
         <p>{{feedpost.description}}</p>
-      </div>
       </div>
     </div>
     <div class="strmln-post-forums">
@@ -77,7 +75,7 @@
 .strmln-post-tiles { position: absolute; right: 100px; }
 .strmln-post-forums { position: absolute; right: 0; width: 100px; }
 
-.strmln-post-tiles > div > div {
+.strmln-post-tiles > div {
   width: 120px; height: 120px;
   display: block; float: left;
   margin: 3px;
