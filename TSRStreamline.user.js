@@ -74,7 +74,7 @@
   overflow-y: auto;
 }
 
-.strmln-post-tiles  { position: absolute; right: 100px; font-size: 0; text-align: center; }
+.strmln-post-tiles  { position: absolute; right: 100px; left: 0; font-size: 0; text-align: center; }
 .strmln-post-forums { position: absolute; width: 100px; right: 0; }
 
 .strmln-post-tile {
