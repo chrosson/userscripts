@@ -32,9 +32,10 @@
   <div ng-controller="NewPostListCtrl">
     <div>
       GetNewPosts <button ng-click="getPosts()">Greet</button>
+      Limit: <input type="range" min="0" max="100" ng-model="limit">
     </div>
     <div class="strmln-post-tiles">
-      <div class="strmln-post-tile" ng-repeat="feedpost in feedposts">
+      <div class="strmln-post-tile" ng-repeat="feedpost in feedposts | limitTo:limit">
         <div class="strmln-post-tile-content">
           {{feedpost.creator}}
           <p>{{feedpost.description}}</p>
@@ -42,7 +43,7 @@
       </div>
     </div>
     <div class="strmln-post-forums">
-      <div ng-repeat="feedpost in feedposts">
+      <div ng-repeat="feedpost in feedposts | limitTo:limit">
         <a href="{{feedpost.category.domain}}">{{feedpost.category.text}}</a>
       </div>
     </div>
@@ -168,6 +169,7 @@
   app.controller('NewPostListCtrl', ['$scope', function ($scope) {
 
     $scope.feedposts = [];
+    $scope.limit = 5;
 
     $scope.getPosts = function () {
       api.noapi.get_feed(true, 20, function (d) {
