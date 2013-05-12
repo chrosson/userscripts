@@ -134,10 +134,24 @@
 
   /******* ANGULAR BEGIN *******/
 
+  // http://www.cheatography.com/proloser/cheat-sheets/angularjs/ - angularjs cheat sheet
+  // http://www.egghead.io/ - good angularjs vids
+
+  // making things change on a hover
+  // http://stackoverflow.com/questions/14105845/make-background-color-change-on-hover-after-setting-style-using-ng-style
+  // http://stackoverflow.com/questions/9576167/highlight-multiple-items-on-hovers-condition
+  // http://www.grobmeier.de/angular-js-the-show-on-mouseenter-hide-on-mouseleave-directive-31082012.html
+  // https://www.google.com/webhp?ie=UTF-8#hl=en&q=css+highlight+multiple+items+related+element+on+hover&fp=1
+
+  // http://jsfiddle.net/ItsLeeOwen/HFWEp/ - switching between html fragment templates
+
   // http://stackoverflow.com/questions/13937318/convert-angular-http-get-function-to-a-service
   // http://stackoverflow.com/questions/15666048/angular-js-service-vs-provide-vs-factory
   // http://stackoverflow.com/questions/13762228/confused-about-service-vs-factory
   // http://jacobmumm.com/2012/08/28/angular-js-services/
+  // http://onehungrymind.com/angularjs-directives-basics/
+  // http://www.codinginsight.com/angularjs-directives/
+  // http://docs.angularjs.org/guide/directive
 
   var app = angular.module('streamline', []);
   app.controller('PostListCtrl', ['$scope', function ($scope) {
@@ -165,6 +179,8 @@
   // http://codepen.io/coolinfoforme/details/uAhzx#stats - looks like bsd?
   // http://www.ryanlowdermilk.com/2012/03/windows-8-metro-tiles-with-html-css3-and-javascript/
   // http://masonry.desandro.com/ - this this this
+  // https://github.com/desandro/vanilla-masonry
+  // https://github.com/metafizzy/packery - noncommercial
 
   // http://www.thestudentroom.co.uk/external.php?type=rss2&lastpost=1&count=100
   app.controller('NewPostListCtrl', ['$scope', function ($scope) {
