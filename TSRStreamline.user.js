@@ -23,7 +23,7 @@
 
 ***********RESOURCE_START=postlist_tmpl*************
 
-<div id="streamline-view" ng-app="streamline" ng-cloak>
+<div id="strmln-view" ng-app="streamline" ng-cloak>
 
   <div>
     Search: <input ng-model="query">
@@ -33,9 +33,18 @@
     <div>
       GetNewPosts <button ng-click="getPosts()">Greet</button>
     </div>
-    <div ng-repeat="feedpost in feedposts" style="width: 120px; height: 120px; float: left; border-color: red; border-style: solid; margin: 3px;">
-      {{feedpost.creator}}
-      <p>{{feedpost.description}}</p>
+    <div class="strmln-post-tiles">
+      <div>
+      <div ng-repeat="feedpost in feedposts">
+        {{feedpost.creator}}
+        <p>{{feedpost.description}}</p>
+      </div>
+      </div>
+    </div>
+    <div class="strmln-post-forums">
+      <div ng-repeat="feedpost in feedposts">
+        <a href="{{feedpost.category.domain}}">{{feedpost.category.text}}</a>
+      </div>
     </div>
   </div>
 
@@ -58,11 +67,21 @@
 
 ***********RESOURCE_START=css*************
 
-#streamline-view {
+#strmln-view {
   position: fixed; z-index: 2000;
   top: 10px; left: 10px; bottom: 10px; right: 10px;
   background-color: rgb(202, 202, 202);
   overflow-y: auto;
+}
+
+.strmln-post-tiles { position: absolute; right: 100px; }
+.strmln-post-forums { position: absolute; right: 0; width: 100px; }
+
+.strmln-post-tiles > div > div {
+  width: 120px; height: 120px;
+  display: block; float: left;
+  margin: 3px;
+  border-color: red; border-style: solid;
 }
 
 *************RESOURCE_END*************
