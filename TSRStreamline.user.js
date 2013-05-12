@@ -34,9 +34,11 @@
       GetNewPosts <button ng-click="getPosts()">Greet</button>
     </div>
     <div class="strmln-post-tiles">
-      <div ng-repeat="feedpost in feedposts">
-        {{feedpost.creator}}
-        <p>{{feedpost.description}}</p>
+      <div class="strmln-post-tile" ng-repeat="feedpost in feedposts">
+        <div class="strmln-post-tile-content">
+          {{feedpost.creator}}
+          <p>{{feedpost.description}}</p>
+        </div>
       </div>
     </div>
     <div class="strmln-post-forums">
@@ -72,14 +74,20 @@
   overflow-y: auto;
 }
 
-.strmln-post-tiles { position: absolute; right: 100px; }
-.strmln-post-forums { position: absolute; right: 0; width: 100px; }
+.strmln-post-tiles  { position: absolute; right: 100px; font-size: 0; text-align: center; }
+.strmln-post-forums { position: absolute; width: 100px; right: 0; }
 
-.strmln-post-tiles > div {
+.strmln-post-tile {
+  position: relative;
   width: 120px; height: 120px;
-  display: block; float: left;
+  display: inline-block;
   margin: 3px;
   border-color: red; border-style: solid;
+  font-size: 13px; text-align: left;
+}
+
+.strmln-post-tile-content {
+  position: absolute; height: 100%; width: 100%; overflow: hidden;
 }
 
 *************RESOURCE_END*************
