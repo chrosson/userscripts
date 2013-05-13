@@ -32,7 +32,7 @@
   <div ng-controller="NewPostListCtrl" ng-init="getPosts()">
     <div>
       GetNewPosts <button ng-click="getPosts()">Greet</button>
-      Limit: <input type="range" min="0" max="100" ng-model="limit">
+      Limit: <input type="range" min="0" max="{{feedposts.length}}" ng-model="limit">
     </div>
     <div class="strmln-post-tiles">
       <div class="strmln-post-tile forum-{{feedpost.category.text | wordsToSnakeCase}}"
@@ -87,10 +87,10 @@
 
 .strmln-post-tile {
   position: relative;
-  width: 120px; height: 120px;
+  width: 100px; height: 100px;
   display: inline-block;
   margin: 3px;
-  border-color: red; border-style: solid;
+  padding: 3px;
   font-size: 13px; text-align: left;
 }
 
@@ -192,11 +192,13 @@
   app.controller('NewPostListCtrl', ['$scope', function ($scope) {
 
     $scope.feedposts = [];
-    $scope.limit = 5;
+    $scope.limit = 0;
 
     $scope.getPosts = function () {
       api.noapi.get_feed(true, 20, function (d) {
         $scope.feedposts = d.rss.channel.item;
+        $scope.$apply();
+        $scope.limit = 5;
         $scope.$apply();
       });
     };
