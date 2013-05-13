@@ -32,23 +32,23 @@
   <div ng-controller="NewPostListCtrl" ng-init="getPosts()">
     <div>
       GetNewPosts <button ng-click="getPosts()">Greet</button>
-      Limit: <input type="range" min="0" max="{{feedposts.length}}" ng-model="limit">
+      Limit: <input type="range" min="0" max="{{posts.length}}" ng-model="limit">
     </div>
     <div class="strmln-post-tiles">
-      <div class="strmln-post-tile forum-{{feedpost.category.text | wordsToSnakeCase}}"
-           ng-repeat="feedpost in feedposts | limitTo:limit"
-           ng-style="categoryStyle((feedpost.category.text | wordsToSnakeCase))">
+      <div class="strmln-post-tile strmln-forum-{{post.forum.id}}"
+           ng-repeat="post in posts | limitTo:limit"
+           ng-style="categoryStyle(post.forum.name)">
         <div class="strmln-post-tile-content">
-          {{feedpost.creator}}
-          <p>{{feedpost.title}}</p>
-          <p>{{feedpost.pubDate}}</p>
+          {{post.user}}
+          <p>{{post.title}}</p>
+          <p>{{post.date}}</p>
         </div>
       </div>
     </div>
     <div class="strmln-post-forums">
-      <div category-hover="forum-{{feedpost.category.text | wordsToSnakeCase}}"
-           ng-repeat="feedpost in feedposts | limitTo:limit | uniqueCount:'category.domain' | orderBy:['-count','+category.text']">
-        {{feedpost.count}} - <a href="{{feedpost.category.domain}}">{{feedpost.category.text}}</a>
+      <div category-hover="strmln-forum-{{post.forum.id}}"
+           ng-repeat="post in posts | limitTo:limit | uniqueCount:'forum.id' | orderBy:['-count','+forum.title']">
+        {{post.count}} - <a href="{{post.forum.url}}">{{post.forum.title}}</a>
       </div>
     </div>
   </div>
@@ -189,14 +189,33 @@
   // https://github.com/metafizzy/packery - noncommercial
 
   // http://www.thestudentroom.co.uk/external.php?type=rss2&lastpost=1&count=100
-  app.controller('NewPostListCtrl', ['$scope', function ($scope) {
+  app.controller('NewPostListCtrl', ['$scope', '$filter', function ($scope, $filter) {
 
-    $scope.feedposts = [];
+    $scope.posts = [];
+    $scope.forums = {};
     $scope.limit = 0;
+
+    var snakeCase = $filter('wordsToSnakeCase');
 
     $scope.getPosts = function () {
       api.noapi.get_feed(true, 20, function (d) {
-        $scope.feedposts = d.rss.channel.item;
+        d.rss.channel.item.map(function (item) {
+          var forumId = item.category.domain.match(/[0-9]+$/)[0];
+          if ($scope.forums[forumId] === undefined) {
+            $scope.forums[forumId] = {
+              id: forumId,
+              name: snakeCase(item.category.text),
+              title: item.category.text,
+              url: item.category.domain
+            };
+          }
+          $scope.posts.push({
+            user: item.creator,
+            date: item.postDate,
+            title: item.title,
+            forum: $scope.forums[forumId]
+          });
+        });
         $scope.$apply();
         $scope.limit = 5;
         $scope.$apply();
