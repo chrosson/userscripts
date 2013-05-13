@@ -37,7 +37,7 @@
     <div class="strmln-post-tiles">
       <div class="strmln-post-tile strmln-forum-{{post.forum.id}}"
            ng-repeat="post in posts | limitTo:limit"
-           ng-style="categoryStyle(post.forum.name)">
+           ng-style="forumStyle(post.forum)">
         <div class="strmln-post-tile-content">
           {{post.user}}
           <p>{{post.title}}</p>
@@ -199,6 +199,7 @@
 
     $scope.getPosts = function () {
       api.noapi.get_feed(true, 20, function (d) {
+        var count = 0;
         d.rss.channel.item.map(function (item) {
           var forumId = item.category.domain.match(/[0-9]+$/)[0];
           if ($scope.forums[forumId] === undefined) {
@@ -206,7 +207,8 @@
               id: forumId,
               name: snakeCase(item.category.text),
               title: item.category.text,
-              url: item.category.domain
+              url: item.category.domain,
+              n: count++
             };
           }
           $scope.posts.push({
@@ -222,15 +224,10 @@
       });
     };
 
-    var categoryColors = {};
-    var currentHue = 0;
-    $scope.categoryStyle = function (category) {
-      if (categoryColors[category] === undefined) {
-        categoryColors[category] = 'hsl(' + currentHue + ',100%,60%)';
-        currentHue += 60;
-        if (currentHue >= 360) { currentHue -= 360; }
-      }
-      return { backgroundColor: categoryColors[category] };
+    $scope.forumStyle = function (forum) {
+      var hue = (360/$scope.limit) * forum.n,
+          color = 'hsl(' + hue + ',100%,60%)';
+      return { backgroundColor: color };
     };
 
   }]);
