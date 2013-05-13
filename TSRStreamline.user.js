@@ -29,13 +29,15 @@
     Search: <input ng-model="query">
   </div>
 
-  <div ng-controller="NewPostListCtrl">
+  <div ng-controller="NewPostListCtrl" ng-init="getPosts()">
     <div>
       GetNewPosts <button ng-click="getPosts()">Greet</button>
       Limit: <input type="range" min="0" max="100" ng-model="limit">
     </div>
     <div class="strmln-post-tiles">
-      <div class="strmln-post-tile forum-{{feedpost.category.text | wordsToSnakeCase}}" ng-repeat="feedpost in feedposts | limitTo:limit">
+      <div class="strmln-post-tile forum-{{feedpost.category.text | wordsToSnakeCase}}"
+           ng-repeat="feedpost in feedposts | limitTo:limit"
+           ng-style="categoryStyle((feedpost.category.text | wordsToSnakeCase))">
         <div class="strmln-post-tile-content">
           {{feedpost.creator}}
           <p>{{feedpost.title}}</p>
@@ -78,6 +80,7 @@
 }
 
 .highlight { background-color: blue; }
+.fadeout   { opacity: 0.2; }
 
 .strmln-post-tiles  { position: absolute; right: 170px; left: 20px; font-size: 0; text-align: center; }
 .strmln-post-forums { position: absolute; width: 150px; right: 20px; }
@@ -198,21 +201,33 @@
       });
     };
 
+    var categoryColors = {};
+    var currentHue = 0;
+    $scope.categoryStyle = function (category) {
+      if (categoryColors[category] === undefined) {
+        categoryColors[category] = 'hsl(' + currentHue + ',100%,60%)';
+        currentHue += 60;
+        if (currentHue >= 360) { currentHue -= 360; }
+      }
+      return { backgroundColor: categoryColors[category] };
+    };
+
   }]);
 
   app.directive('categoryHover', [function () {
+    var $tileParent = angular.element('.strmln-post-tiles');
     return {
       link: function ($scope, $element, attrs) {
         $element.bind('mouseenter', function() {
-          angular.element('.' + attrs.categoryHover).addClass('highlight');
+          $tileParent.children(':not(.' + attrs.categoryHover + ')').addClass('fadeout');
           $element.addClass('highlight');
         });
         $element.bind('mouseleave', function() {
-          angular.element('.' + attrs.categoryHover).removeClass('highlight');
+          $tileParent.children(':not(.' + attrs.categoryHover + ')').removeClass('fadeout');
           $element.removeClass('highlight');
         });
       }
-    }
+    };
   }]);
 
   app.filter('wordsToSnakeCase', [function () {
