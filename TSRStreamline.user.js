@@ -225,7 +225,12 @@
     };
 
     $scope.forumStyle = function (forum) {
-      var hue = (360/$scope.limit) * forum.n,
+      var activeForums = {};
+      for (var l = $scope.limit, i = 0; i < l; i++) {
+        activeForums[$scope.posts[i].forum.id] = 1;
+      }
+      var numForums = Object.keys(activeForums).length;
+      var hue = (360/numForums) * forum.n,
           color = 'hsl(' + hue + ',100%,60%)';
       return { backgroundColor: color };
     };
