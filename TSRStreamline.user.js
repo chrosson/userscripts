@@ -209,9 +209,12 @@
               url: item.category.domain
             };
           }
+          var date = new Date(item.pubDate);
+          var postDate = date.getFullYear() + '-' + ("0" + (date.getMonth()+1)).slice(-2) + '-' + ("0" + date.getDate()).slice(-2) +
+                         ' ' + ("0" + date.getHours()).slice(-2) + ':' + ("0" + date.getMinutes()).slice(-2);
           $scope.posts.push({
             user: item.creator,
-            date: item.postDate,
+            date: postDate,
             title: item.title,
             forum: $scope.forums[forumId]
           });
