@@ -199,7 +199,6 @@
 
     $scope.getPosts = function () {
       api.noapi.get_feed(true, 20, function (d) {
-        var count = 0;
         d.rss.channel.item.map(function (item) {
           var forumId = item.category.domain.match(/[0-9]+$/)[0];
           if ($scope.forums[forumId] === undefined) {
@@ -207,8 +206,7 @@
               id: forumId,
               name: snakeCase(item.category.text),
               title: item.category.text,
-              url: item.category.domain,
-              n: count++
+              url: item.category.domain
             };
           }
           $scope.posts.push({
@@ -224,15 +222,31 @@
       });
     };
 
+    var forumColorCache = {};
     $scope.forumStyle = function (forum) {
-      var activeForums = {};
-      for (var l = $scope.limit, i = 0; i < l; i++) {
-        activeForums[$scope.posts[i].forum.id] = 1;
+      var limit = $scope.limit;
+      // http://jsperf.com/array-indexof-vs-object-s-in-operator/10
+      if ((typeof forumColorCache[limit]) === "undefined") {
+        forumColorCache[limit] = {};
+        var posts = $scope.posts, activeForums = {}, activeForumList = [], post;
+        for (var l = $scope.limit, i = 0; i < l; i++) {
+          post = posts[i];
+          if (activeForums[post.forum.id] !== undefined) { continue; }
+          activeForums[post.forum.id] = post.forum;
+          activeForumList.push(post.forum);
+        }
+        activeForumList.sort(function (f1, f2) {
+          if (f1.name === f2.name) {
+            return f1.id === f2.id ? 0 : (f1.id > f2.id ? 1 : -1);
+          } else {
+            return f1.name > f2.name ? 1 : -1;
+          }
+        });
+        for (var l = activeForumList.length, i = 0; i < l; i++) {
+          forumColorCache[limit][activeForumList[i].id] = (360/l) * i;
+        }
       }
-      var numForums = Object.keys(activeForums).length;
-      var hue = (360/numForums) * forum.n,
-          color = 'hsl(' + hue + ',100%,60%)';
-      return { backgroundColor: color };
+      return { backgroundColor: 'hsl(' + forumColorCache[limit][forum.id] + ',100%,60%)' };
     };
 
   }]);
