@@ -181,6 +181,30 @@ function TSRAPI() {
 
   this.mbq = {
 
+    get_config: function (callback, onerror) {
+      // http://tapatalk.com/api/api_section.php?id=1#get_config
+      jQuery.ajax({
+        type: 'POST',
+        url: "http://www.thestudentroom.co.uk/mobiquo/mobiquo.php",
+        data: '<?xml version="1.0"?><methodCall><methodName>get_config</methodName><params></params></methodCall>',
+        success: function (data, textStatus, jqXHR) {
+          var d = mbq_parse(data);
+          if (typeof(d.version) !== 'string') {
+            console.log("FAILED: " + d.version);
+            console.log(d);
+            (onerror || noop)(d, jqXHR, textStatus, errorThrown)
+          } else {
+            callback(d);
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log("Failed to connect to TSR to load thread...");
+          (onerror || noop)(null, jqXHR, textStatus, errorThrown);
+        },
+        dataType: "xml"
+      });
+    },
+
     get_thread: function (topic_id, start_num, last_num, return_html, callback, onerror) {
       /*
         get_thread      Returns a list of posts under the same thread, given a topic_id
