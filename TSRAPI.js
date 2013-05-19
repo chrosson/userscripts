@@ -161,7 +161,7 @@ function TSRAPI() {
         http://www.thestudentroom.co.uk/external.php?type=rss2&lastpost=1&count=5
         lastpost: if true, order threads by last post, otherwise when created
         count: number of results
-        forumids: optional, forum ids to return
+        forumids: optional, comma separated forum ids to return
       */
       jQuery.ajax({
         type: 'GET',
@@ -179,6 +179,8 @@ function TSRAPI() {
     }
   };
 
+  // http://tapatalk.com/api/api_home.php
+  // https://github.com/tapatalk/api/tree/master/mobiquo
   this.mbq = {
 
     get_config: function (callback, onerror) {
@@ -241,14 +243,14 @@ function TSRAPI() {
         icon_url        String                      topic author avatar URL
         post_time       Date              yes       dateTime.iso8601 format. If this topic has no reply, use the topic creation time.
         allow_smilies   Boolean                     if "false" do not display smilies (text instead), allows admin disable smilies. assume "true"
-        attachments     Array of Hash table         Returns a list of attachments user has uploaded within this post, in array of hash format.
+        attachments     Array of structs            Returns a list of attachments user has uploaded within this post, in array of hash format.
         content_type    String            yes       "image", "pdf" or "other"
         thumbnail_url   String                      if content type = "image"), use absolute path (optional: if not presented, use "url" to load thumbnail instead)
         url             String                      URL of the attachment source.
-        thanks_info     Array of Hash table         Return post thanks user list infor only when thank_post is supported.
+        thanks_info     Array of structs         Return post thanks user list infor only when thank_post is supported.
         userid          String                      Id of the user who has thanked this post
         username        byte[]                      Name of the user who has thanked this post
-        likes_info      Array of Hash table         Return post likes user list infor only when like_post/unlike_post are supported.
+        likes_info      Array of structs            Return post likes user list infor only when like_post/unlike_post are supported.
         userid          String                      Id of the user who has liked this post
         username        byte[]                      Name of the user who has liked this post
       */

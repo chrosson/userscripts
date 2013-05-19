@@ -151,6 +151,8 @@
 
   // http://jsfiddle.net/ItsLeeOwen/HFWEp/ - switching between html fragment templates
 
+  // http://stackoverflow.com/questions/15114942/angular-js-fire-off-two-async-service-calls-then-perform-action-after-both-have
+
   // http://stackoverflow.com/questions/13937318/convert-angular-http-get-function-to-a-service
   // http://stackoverflow.com/questions/15666048/angular-js-service-vs-provide-vs-factory
   // http://stackoverflow.com/questions/13762228/confused-about-service-vs-factory
@@ -160,6 +162,8 @@
   // http://docs.angularjs.org/guide/directive
 
   var app = angular.module('streamline', []);
+
+  // This currently isn't used
   app.controller('PostListCtrl', ['$scope', function ($scope) {
 
     $scope.posts = [
@@ -188,7 +192,6 @@
   // https://github.com/desandro/vanilla-masonry
   // https://github.com/metafizzy/packery - noncommercial
 
-  // http://www.thestudentroom.co.uk/external.php?type=rss2&lastpost=1&count=100
   app.controller('NewPostListCtrl', ['$scope', '$filter', function ($scope, $filter) {
 
     $scope.posts = [];
@@ -276,7 +279,8 @@
     }
   }]);
 
-  // modified from https://github.com/angular-ui/ui-utils/blob/9fc207f9eefe93c6b772b1b3c7cf97144347f9ab/modules/unique/unique.js
+  // https://github.com/angular-ui/ui-utils/blob/c8c298da336ae7fc84b1289337f5ed5e69863361/modules/unique/unique.js
+  // modified to include counting
   app.filter('uniqueCount', ['$parse', function ($parse) {
     return function (items, filterOn) {
 
@@ -286,7 +290,7 @@
 
       if ((filterOn || angular.isUndefined(filterOn)) && angular.isArray(items)) {
         var hashCheck = {}, newItems = [],
-          get = angular.isString(filterOn) ? $parse(filterOn) : function (item) { return item };
+          get = angular.isString(filterOn) ? $parse(filterOn) : function (item) { return item; };
 
         var extractValueToCompare = function (item) {
           return angular.isObject(item) ? get(item) : item;
