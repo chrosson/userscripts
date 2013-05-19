@@ -212,7 +212,7 @@ function TSRAPI() {
         get_thread      Returns a list of posts under the same thread, given a topic_id
         Name            Type              Required? Description
 
-        topic_id        String                      Topic ID of the thread.
+        topic_id        String            yes       Topic ID of the thread.
         start_num       Int               yes       Returns posts 'slice' max 50. First 20 by default
         last_num        Int               yes
         return_html     Boolean
@@ -261,12 +261,13 @@ function TSRAPI() {
               '<param><value><string>' + topic_id + '</string></value></param>' +
               '<param><value><i4>' + start_num + '</i4></value></param>' +
               '<param><value><i4>' + last_num + '</i4></value></param>' +
-              '<param><value><boolean>' + return_html + '</boolean></value></param>' +
+              (return_html != null ? '<param><value><boolean>' + return_html + '</boolean></value></param>' : '') +
               '</params></methodCall>',
         success: function (data, textStatus, jqXHR) {
           var d = mbq_parse(data);
-          if (typeof(d.position) != 'number' || d.position < 0) {
+          if (typeof(d.position) !== 'number' || d.position < 0) {
             console.log("FAILED: " + d.topic_id);
+            console.log(d);
             (onerror || noop)(d, jqXHR, textStatus, errorThrown)
           } else {
             callback(d);
