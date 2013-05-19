@@ -15,6 +15,8 @@ function TSRAPI() {
       return members;
     }
 
+    function noop() {}
+
     function handleArray(elt) {
       var items = [];
       var data = elt.firstElementChild;
@@ -62,6 +64,11 @@ function TSRAPI() {
           return handleElt(elt.firstElementChild);
         case "methodResponse":
           return handleElt(elt.firstElementChild);
+        case "fault":
+          var fault = handleElt(elt.firstElementChild);
+          console.log("Fault occured");
+          console.log(fault);
+          return fault;
         default:
           throw "Unrecognised elt '" + elt.nodeName + "'";
       }
@@ -174,7 +181,7 @@ function TSRAPI() {
 
   this.mbq = {
 
-    get_thread: function (topic_id, start_num, last_num, return_html, callback) {
+    get_thread: function (topic_id, start_num, last_num, return_html, callback, onerror) {
       /*
         get_thread      Returns a list of posts under the same thread, given a topic_id
         Name            Type              Required? Description
@@ -232,10 +239,17 @@ function TSRAPI() {
               '</params></methodCall>',
         success: function (data, textStatus, jqXHR) {
           var d = mbq_parse(data);
-          if (typeof(d.position) != 'number' || d.position < 0) { return alert("FAILED: " + d.topic_id); }
-          callback(d);
+          if (typeof(d.position) != 'number' || d.position < 0) {
+            console.log("FAILED: " + d.topic_id);
+            (onerror || noop)(d, jqXHR, textStatus, errorThrown)
+          } else {
+            callback(d);
+          }
         },
-        error: function (jqXHR, textStatus, errorThrown) { alert("Failed to connect to TSR to load thread..."); },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log("Failed to connect to TSR to load thread...");
+          (onerror || noop)(null, jqXHR, textStatus, errorThrown);
+        },
         dataType: "xml"
       });
     }
