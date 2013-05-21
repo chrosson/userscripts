@@ -131,6 +131,26 @@
       return resource;
   })();
 
+  // From https://github.com/prettycode/Object.identical.js/blob/3bc2365477cfe3863de6f465fb34716e2b565e7c/Object.identical.js
+  var isIdentical = function (a, b, sortArrays) {
+    function sort(object) {
+      if (sortArrays === true && Array.isArray(object)) {
+          return object.sort();
+      } else if (typeof object !== "object" || object === null) {
+        return object;
+      }
+
+        return Object.keys(object).sort().map(function(key) {
+        return {
+          key: key,
+          value: sort(object[key])
+        };
+      });
+    }
+
+    return JSON.stringify(sort(a)) === JSON.stringify(sort(b));
+  };
+
   var styleElt = document.createElement("style");
   styleElt.textContent = resource['css'];
   styleElt.type = 'text/css';
