@@ -279,6 +279,76 @@ function TSRAPI() {
         },
         dataType: "xml"
       });
+    },
+
+    get_latest_topic: function (start_num, last_num, search_id, filters, callback) {
+      /*
+        get_latest_topic  Returns a list of latest topics ordered by date
+        Name            Type              Required? Description
+
+        start_num       Int               yes       For pagination. If start_num = 0 & last_num = 9, it returns first 10 posts from the topic, sorted by date (last-in-first-out). If both are not presented, return first 20 posts. if start_num = 0 and last_num = 0, return the first post only, and so on (e.g. 1,1; 2,2). If start_num smaller than last_num returns null. If last_num - start_num > 50, returns only first 50 posts starting from start_num
+        last_num        Int               yes
+        search_id       String                      for caching and for pagination support
+        filters         Array of structs            A set of filtering rules to filter the search result. E.g. user can specify only to display topics under certain sub-forums, or can exclude topis from certain sub-forums. Format of the filters: "only_in" = { array of sub-forum ID }. "not_in" = {array of sub-forum ID}.
+
+        result          Boolean           yes       true if the action is successful.
+        result_text     byte[]                      para_description
+        total_topic_num Int               yes       total number of latest topics
+        search_id       String                      search id for sending back to the server for pagination support
+        topics          Array of structs            list of topics in request range
+        forum_id        String            yes
+        forum_name      byte[]            yes
+        topic_id        String            yes
+        topic_title     byte[]            yes       Remove all BBCode in title
+        prefix          byte[]
+        post_author_name byte[]           yes
+        post_author_id  String            yes
+        is_subscribed   Boolean                     true if this thread has been subscribed by this user.
+        can_subscribe   Boolean           yes       false if the subscription feature is turned off
+        is_closed       Boolean                     true if this thread has been closed.
+        icon_url        String                      the last reply author avatar URL
+        participated_uids Array of String           list of users who participated in topic, no more than 10, ordered by the "importance" - can be determined by num of posts by user in topic etc. Plugin should check HTTP Header "Mobiquoid". If = 11, return this key, otherwise do not return it.
+        post_time       Date              yes       dateTime.iso8601 format. if no replies, topic creation time.
+        reply_number    Int               yes       number of replies in topic (not including OP)
+        new_post        Boolean           yes       true if this topic contains new post since user last login
+        view_number     Int               yes       total number of view in this topic
+        short_content   byte[]                      Characters display rules (should follow this sequence): 1) Remove all BBCode except [ur], [img]. 2) Convert "[url http://...]http://…..[/url]" to "[url]". 3) Convert "[img]http://…..[/img]" to "[img]". 4) Remove "Last edited by..." tag at the end. 5) Remove all non-displayable characters (e.g. \n, \t, etc). 6) Remove all whitespace, /n and /r at the beginning and ending of the content. 7) return only first 200 characters
+      */
+      var filter = "<struct>" +
+        //"<member><name>not_in</name><value><array><data></data></array></member>" +
+        //"<member><name>not_in</name><value><array><data><value><string>1</string></value></data></array></member>" +
+      "</struct>";
+      jQuery.ajax({
+        type: 'POST',
+        url: "http://www.thestudentroom.co.uk/mobiquo/mobiquo.php",
+        data: '<?xml version="1.0"?><methodCall><methodName>get_latest_topic</methodName><params>' +
+              '<param><value><i4>' + start_num + '</i4></value></param>' +
+              // Compensate for strange 'off-by-10' tsr bug
+              '<param><value><i4>' + (last_num + 10) + '</i4></value></param>' +
+              // Don't omit param if not given, just send empty search id - theoretically then allows filters
+              '<param><value><string>' + (search_id != null ? search_id : '') + '</string></value></param>' +
+
+              // Unsure how to make filters work (possibly broken on TSR, works with empty struct though...)
+              '<param>' + (filters != null ? '<value><array>' + filters + '</array></value>' : '') + '</param>' +
+              //'<param><value>' + filter + '</value></param>' +
+
+              '</params></methodCall>',
+        success: function (data, textStatus, jqXHR) {
+          var d = mbq_parse(data);
+          if (d.result !== true) {
+            console.log("Failed to get latest topics");
+            console.log(d);
+            (onerror || noop)(d, jqXHR, textStatus);
+          } else {
+            callback(d);
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.log("Failed to connect to TSR to load latest topics...");
+          (onerror || noop)(null, jqXHR, textStatus, errorThrown);
+        },
+        dataType: "xml"
+      });
     }
 
   };
