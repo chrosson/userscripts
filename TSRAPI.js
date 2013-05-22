@@ -5,6 +5,8 @@ function TSRAPI() {
   var utf8tob64 = function (str) { return btoa(unescape(encodeURIComponent(str))); };
   var b64toutf8 = function (str) { return decodeURIComponent(escape(atob(str))); };
 
+  function noop() {}
+
   var mbq_parse = (function () {
 
     function handleStruct(elt) {
@@ -14,8 +16,6 @@ function TSRAPI() {
       }
       return members;
     }
-
-    function noop() {}
 
     function handleArray(elt) {
       var items = [];
