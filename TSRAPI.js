@@ -268,7 +268,7 @@ function TSRAPI() {
           if (typeof(d.position) !== 'number' || d.position < 0) {
             console.log("FAILED: " + d.topic_id);
             console.log(d);
-            (onerror || noop)(d, jqXHR, textStatus, errorThrown)
+            (onerror || noop)(d, jqXHR, textStatus);
           } else {
             callback(d);
           }
