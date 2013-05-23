@@ -221,24 +221,24 @@
     var snakeCase = $filter('wordsToSnakeCase');
 
     $scope.getPosts = function () {
-      api.noapi.get_feed(true, 20, function (d) {
-        d.rss.channel.item.map(function (item) {
-          var forumId = item.category.domain.match(/[0-9]+$/)[0];
+      api.mbq.get_latest_topic(0, 49, null, null, function (d) {
+        d.topics.map(function (item) {
+          var forumId = item.forum_id;
           if ($scope.forums[forumId] === undefined) {
             $scope.forums[forumId] = {
               id: forumId,
-              name: snakeCase(item.category.text),
-              title: item.category.text,
-              url: item.category.domain
+              name: snakeCase(item.forum_name),
+              title: item.forum_name,
+              url: "http://www.thestudentroom.co.uk/forumdisplay.php?f=" + forumId
             };
           }
-          var date = new Date(item.pubDate);
+          var date = new Date(item.timestamp * 1000);
           var postDate = date.getFullYear() + '-' + ("0" + (date.getMonth()+1)).slice(-2) + '-' + ("0" + date.getDate()).slice(-2) +
                          ' ' + ("0" + date.getHours()).slice(-2) + ':' + ("0" + date.getMinutes()).slice(-2);
           $scope.posts.push({
-            user: item.creator,
+            user: item.post_author_name,
             date: postDate,
-            title: item.title,
+            title: item.topic_title,
             forum: $scope.forums[forumId]
           });
         });
