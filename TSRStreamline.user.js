@@ -17,6 +17,11 @@
 // @downloadURL    https://userscripts.org/scripts/source/156618.user.js
 // @updateURL      https://userscripts.org/scripts/source/156618.meta.js
 
+/* TODO
+ * - Occasional bug where loading new posts causes a tile with no background
+ *   I thought clearing the colourcache would fix this, clearly not
+ *   Looks like they simply aren't assigned a style attribute
+ */
 
 /*
 ======================INLINE_RESOURCE_BEGIN======================
@@ -216,13 +221,15 @@
 
     $scope.posts = [];
     $scope.forums = {};
-    $scope.limit = 0;
+    $scope.limit = null;
 
     var snakeCase = $filter('wordsToSnakeCase');
 
     $scope.getPosts = function () {
       api.mbq.get_latest_topic(0, 49, null, null, function (d) {
-        d.topics.map(function (item) {
+        var newPosts = [];
+        for (var i = 0, l = d.topics.length; i < l; i++) {
+          var item = d.topics[i];
           var forumId = item.forum_id;
           if ($scope.forums[forumId] === undefined) {
             $scope.forums[forumId] = {
@@ -235,16 +242,21 @@
           var date = new Date(item.timestamp * 1000);
           var postDate = date.getFullYear() + '-' + ("0" + (date.getMonth()+1)).slice(-2) + '-' + ("0" + date.getDate()).slice(-2) +
                          ' ' + ("0" + date.getHours()).slice(-2) + ':' + ("0" + date.getMinutes()).slice(-2);
-          $scope.posts.push({
+
+          var post = {
             user: item.post_author_name,
             date: postDate,
             title: item.topic_title,
             forum: $scope.forums[forumId]
-          });
-        });
+          };
+          if (isIdentical(post, $scope.posts[0])) { break; }
+          newPosts.push(post);
+        }
+        $scope.posts = newPosts.concat($scope.posts).slice(0, 50);
         $scope.$apply();
-        $scope.limit = 5;
-        $scope.$apply();
+        if ($scope.limit === null) { $scope.limit = 5; $scope.$apply(); }
+        forumColorCache = {};
+        setTimeout($scope.getPosts, 5000);
       });
     };
 
