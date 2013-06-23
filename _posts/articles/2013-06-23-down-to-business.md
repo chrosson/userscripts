@@ -36,7 +36,7 @@ Now, we know what our browser did to delete the post, we just need to reproduce 
 
 So:
  - the 'url' can be found in the details of the request - it was http://www.thestudentroom.co.uk/editpost.php
- - we've established that the data we want to send to the server is 'do=deletepost&s=deletepost=delete&reason=areallygoodreason'
+ - we've established that the data we want to send to the server is `do=deletepost&s=deletepost=delete&reason=areallygoodreason`
  - the success callback is what we want to do when TSR responds to our request
 
 Lets try the following (trying to delete the 100th post on TSR):
