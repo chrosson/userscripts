@@ -1,8 +1,8 @@
 ---
 published: true
 layout: article
-title: "Lesson 3 - Down to business"
-abstract: "Enough messing, time to actually do something."
+title: Lesson 3 - Down to business
+abstract: Enough messing, time to actually do something.
 author: Chrosson
 categories:
 - articles
