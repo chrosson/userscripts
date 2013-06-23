@@ -56,7 +56,7 @@ To load a page and grab just the security token, we can do this:
 $('<div>').load('http://www.thestudentroom.co.uk/showthread.php?t=2387591 [name="securitytoken"]', function () {alert(this.children[0].value);})
 ```
 
-That is, create a <div> element open the page specified by the url and load anything matching the (optional) CSS selector into the div element we just created. Once this is done, we call a function which 'alert's the value of the securitytoken.
+That is, create a <div> element (`$('<div>')`) open the page specified by the url and load anything matching the (optional) CSS selector into the div element we just created. Once this is done, we call a function which 'alert's the value of the securitytoken.
 
 But instead of alerting it, we could use it in our deletion request. So get the post id we wanted to delete and use it in here:
 
