@@ -1,12 +1,11 @@
 ---
+published: true
 layout: article
-published: 
-  - true
-  - "true"
 title: "Lesson 3 - Down to business"
 abstract: "Enough messing, time to actually do something."
 author: Chrosson
-categories: articles
+categories:
+- articles
 ---
 
 ### Behind the scenes
