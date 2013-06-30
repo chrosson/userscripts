@@ -42,13 +42,11 @@ So:
 
 Lets try the following (trying to delete the 100th post on TSR):
 
-```
-jQuery.post(
-    'http://www.thestudentroom.co.uk/editpost.php',
-    'do=deletepost&s=&postid=100&deletepost=delete&reason=areallygoodreason',
-    function (data) { console.log(data); alert(123); }
-);
-```
+    jQuery.post(
+        'http://www.thestudentroom.co.uk/editpost.php',
+        'do=deletepost&s=&postid=100&deletepost=delete&reason=areallygoodreason',
+        function (data) { console.log(data); alert(123); }
+    );
 
 Note the last item in the list of the 'Network' tab. Paste the above into the chrome developer console and hit enter. Now go back to the 'Network' tab and see how two different items have been added to the list - your post request, and then TSR suggesting that your browser should load thread 12. Note that (despite the 'console.log') we don't get anything logged but do get the alert box - this is an issue with the chrome developer tools.
 
@@ -58,30 +56,26 @@ So, the securitytoken is regenerated whenever we open a page. But if we're pasti
 
 To load a page and grab just the security token, we can do this:
 
-```
-$('<div>').load(
-    'http://www.thestudentroom.co.uk/showthread.php?t=2387591 [name="securitytoken"]',
-    function () {alert(this.children[0].value);}
-)
-```
+    $('<div>').load(
+        'http://www.thestudentroom.co.uk/showthread.php?t=2387591 [name="securitytoken"]',
+        function () {alert(this.children[0].value);}
+    )
 
 That is, create a `<div>` element with `$('<div>')`, open the page specified by the url and load anything matching the (optional) CSS selector into the div element we just created. Once this is done, we call a function which 'alert's the value of the securitytoken.
 
 But instead of alerting it, we could use it in our deletion request. So get the post id we wanted to delete and use it in here:
 
-```
-var postid = 12345;
-jQuery('<div>')
-    .load('http://www.thestudentroom.co.uk/showthread.php?p=' + postid + ' [name="securitytoken"]',
-    function () {
-        var securitytoken = this.children[0].value;
-        jQuery.post(
-            'http://www.thestudentroom.co.uk/editpost.php',
-            'do=deletepost&s=&postid=' + postid + '&deletepost=delete&reason=areallygoodreason&securitytoken=' + securitytoken,
-            function () { alert('deleted'); }
-        );
-  });
-```
+    var postid = 12345;
+    jQuery('<div>')
+        .load('http://www.thestudentroom.co.uk/showthread.php?p=' + postid + ' [name="securitytoken"]',
+        function () {
+            var securitytoken = this.children[0].value;
+            jQuery.post(
+                'http://www.thestudentroom.co.uk/editpost.php',
+                'do=deletepost&s=&postid=' + postid + '&deletepost=delete&reason=areallygoodreason&securitytoken=' + securitytoken,
+                function () { alert('deleted'); }
+            );
+      });
 
 This is a relatively complex bit of code, but all we're actually doing is tying together what we've done so far - choose a postid, get a security token for the page containing that post, then actually make the deletion request for the specified postid with the securitytoken we just found. The '+' operators in javascript don't just do maths - they also join strings.
 
