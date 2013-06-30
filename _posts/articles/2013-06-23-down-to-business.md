@@ -59,10 +59,10 @@ So, the securitytoken is regenerated whenever we open a page. But if we're pasti
 To load a page and grab just the security token, we can do this:
 
 ```
-$('<div>').load(
-    'http://www.thestudentroom.co.uk/showthread.php?t=2387591 [name="securitytoken"]',
-    function () {alert(this.children[0].value);}
-)
+    $('<div>').load(
+        'http://www.thestudentroom.co.uk/showthread.php?t=2387591 [name="securitytoken"]',
+        function () {alert(this.children[0].value);}
+    )
 ```
 
 That is, create a `<div>` element with `$('<div>')`, open the page specified by the url and load anything matching the (optional) CSS selector into the div element we just created. Once this is done, we call a function which 'alert's the value of the securitytoken.
