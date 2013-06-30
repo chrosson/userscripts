@@ -72,7 +72,8 @@ But instead of alerting it, we could use it in our deletion request. So get the 
             var securitytoken = this.children[0].value;
             jQuery.post(
                 'http://www.thestudentroom.co.uk/editpost.php',
-                'do=deletepost&s=&postid=' + postid + '&deletepost=delete&reason=areallygoodreason&securitytoken=' + securitytoken,
+                'do=deletepost&s=&postid=' + postid +
+                '&deletepost=delete&reason=areallygoodreason&securitytoken=' + securitytoken,
                 function () { alert('deleted'); }
             );
       });
