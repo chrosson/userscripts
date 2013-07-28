@@ -9,6 +9,5 @@ author: Chrosson
 categories: articles
 ---
 
-## A New Post
-
-Enter text in [Markdown](http://daringfireball.net/projects/markdown/). Use the toolbar above, or click the **?** button for formatting help.
+### Looking at Anatomy
+Last time we found out how to delete a post if we know the post id, so we actually have the core functionality we need. Now we need to wrap this all up so we can actually use it in a userscript
