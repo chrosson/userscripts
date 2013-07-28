@@ -21,6 +21,7 @@
  * - Occasional bug where loading new posts causes a tile with no background
  *   I thought clearing the colourcache would fix this, clearly not
  *   Looks like they simply aren't assigned a style attribute
+ *   Same thing happens if set $scope.limit very high...
  */
 
 /*
