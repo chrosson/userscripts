@@ -11,7 +11,7 @@
 // @copyright      2013+, Chrosson
 // @namespace      http://www.thestudentroom.co.uk/member.php?u=334116
 // @require        https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js
-// @require        https://ajax.googleapis.com/ajax/libs/angularjs/1.0.6/angular.min.js
+// @require        https://ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js
 // ==/UserScript==
 
 // @downloadURL    https://userscripts.org/scripts/source/156618.user.js
