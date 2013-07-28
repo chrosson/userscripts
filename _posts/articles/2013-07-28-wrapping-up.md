@@ -74,7 +74,9 @@ We don't really get much information on whether it fails or succeeds. Let's make
                 
                 // Check if thread is closed (i.e. there's no security token)
                 if (this.children[0] === undefined) {
-                    $(button).replaceWith($('<button>').css('color','red').text('Closed').prop('disabled',true));
+                    $(button).replaceWith(
+                        $('<button>').css('color','red').text('Closed').prop('disabled',true)
+                    );
                     return;
                 };
                 
@@ -89,7 +91,9 @@ We don't really get much information on whether it fails or succeeds. Let's make
                         if (typeof doc === "string" &&
                                 doc.indexOf('post_' + postid) !== -1) {
                             // Not sure what happened, failed to delete for some reason
-                            $(button).replaceWith($('<button>').css('color','red').text('!').prop('disabled',true));
+                            $(button).replaceWith(
+                                $('<button>').css('color','red').text('!').prop('disabled',true)
+                            );
                         
                         } else if (typeof doc === "string") {
                             // Assume we did delete
@@ -123,7 +127,8 @@ We don't really get much information on whether it fails or succeeds. Let's make
 
 Note how the script has exploded in size. Error checking is sadly one of the hardest parts of writing a userscript. Let's make it a bit prettier by adding a progress spinner while we're waiting for deletion. Just add the following code right at the top of the deletePost function to, as the first step, replace the initial button with a progress spinner.
 
-    var progress = $('<img>').attr('src', 'http://www.thestudentroom.co.uk/images/miscellaneous/progress.gif');
+    var progress = $('<img>')
+        .attr('src', 'http://www.thestudentroom.co.uk/images/miscellaneous/progress.gif');
     $(button).replaceWith(progress);
     button = progress;
 
@@ -142,7 +147,8 @@ Finally, we add a button to delete all posts on a results page and make the sing
     function deletePost(postid, button) {
     
         // Replace button with progress loader
-        var progress = $('<img>').attr('src', 'http://www.thestudentroom.co.uk/images/miscellaneous/progress.gif');
+        var progress = $('<img>')
+            .attr('src', 'http://www.thestudentroom.co.uk/images/miscellaneous/progress.gif');
         $(button).replaceWith(progress);
         button = progress;
         
@@ -152,7 +158,9 @@ Finally, we add a button to delete all posts on a results page and make the sing
                 
                 // Check if thread is closed (i.e. there's no security token)
                 if (this.children[0] === undefined) {
-                    $(button).replaceWith($('<button>').css('color','red').text('Closed').prop('disabled',true));
+                    $(button).replaceWith(
+                        $('<button>').css('color','red').text('Closed').prop('disabled',true)
+                    );
                     return;
                 };
                 
@@ -169,7 +177,9 @@ Finally, we add a button to delete all posts on a results page and make the sing
                         if (typeof doc === "string" &&
                                 doc.indexOf('post_' + postid) !== -1) {
                             // Not sure what happened, failed to delete for some reason
-                            $(button).replaceWith($('<button>').css('color','red').text('!').prop('disabled',true));
+                            $(button).replaceWith(
+                                $('<button>').css('color','red').text('!').prop('disabled',true)
+                            );
                         
                         } else if (typeof doc === "string") {
                             // Assume we did delete
