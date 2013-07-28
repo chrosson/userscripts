@@ -1,7 +1,5 @@
 ---
-published: 
-  - true
-  - "false"
+published: true
 layout: article
 title: "Lesson 4 - Wrapping Up"
 abstract: Pulling it all together
