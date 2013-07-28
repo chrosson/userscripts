@@ -2,7 +2,7 @@
 published: true
 layout: article
 title: "Lesson 4 - Wrapping Up"
-abstract: Pulling it all together
+abstract: "Pulling it all together"
 author: Chrosson
 categories: articles
 ---
@@ -21,7 +21,7 @@ First, replace what's already in there with the following:
     // @copyright      2013+, Chrosson
     // @namespace      http://www.thestudentroom.co.uk/member.php?u=334116
     // ==/UserScript==
-
+    
     alert('Hi');
 
 The parts between the `==UserScript==` lines is known as the metadata block and provides information about your userscript. You'll want to change the `author` and `copyright` to yourself. You'll also want to change the `namespace` to something you 'own' - when scripts are named the same it's used to disambiguate so it wants to be unique. I've used my TSR profile page.
@@ -56,7 +56,7 @@ The above uses a mysterious tool known as regular expressions which are designed
                 );
             });
     }
-
+    
     $('#search_results a[href^="showthread"]').before(function () {
         var postid = this.href.match(/p=([0-9]+)/)[1];
         return $('<button>').text('X').click(function () { deletePost(postid); });
@@ -71,13 +71,13 @@ We don't really get much information on whether it fails or succeeds. Let's make
         jQuery('<div>')
             .load('http://www.thestudentroom.co.uk/showthread.php?p=' + postid + ' [name="securitytoken"]',
             function () {
-
+                
                 // Check if thread is closed (i.e. there's no security token)
                 if (this.children[0] === undefined) {
                     $(button).replaceWith($('<button>').css('color','red').text('Closed').prop('disabled',true));
                     return;
                 };
-
+                
                 // Delete the post
                 var securitytoken = this.children[0].value;
                 jQuery.post(
@@ -85,21 +85,21 @@ We don't really get much information on whether it fails or succeeds. Let's make
                     'do=deletepost&s=&postid=' + postid +
                     '&deletepost=delete&reason=areallygoodreason&securitytoken=' + securitytoken,
                     function (doc) {
-
+                        
                         if (typeof doc === "string" &&
                                 doc.indexOf('post_' + postid) !== -1) {
                             // Not sure what happened, failed to delete for some reason
                             $(button).replaceWith($('<button>').css('color','red').text('!').prop('disabled',true));
-                            
+                        
                         } else if (typeof doc === "string") {
                             // Assume we did delete
                             $(button).parent().parent().fadeOut();
-                            
+                        
                         } else if (typeof doc === "object" &&
                                 doc.childNodes[0].textContent.indexOf("Invalid Post specified.") > -1) {
                             // Already deleted
                             $(button).parent().parent().fadeOut();
-                            
+                        
                         } else if (typeof doc === "object" &&
                                 doc.childNodes[0].textContent.indexOf("you do not have permission") > -1) {
                             // No permission for some reason
@@ -115,7 +115,7 @@ We don't really get much information on whether it fails or succeeds. Let's make
                 );
             });
     }
-
+    
     $('#search_results a[href^="showthread"]').before(function () {
         var postid = this.href.match(/p=([0-9]+)/)[1];
         return $('<button>').text('X').click(function () { deletePost(postid, this); });
@@ -138,24 +138,24 @@ Finally, we add a button to delete all posts on a results page and make the sing
     // @copyright      2013+, Chrosson
     // @namespace      http://www.thestudentroom.co.uk/member.php?u=334116
     // ==/UserScript==
-
+    
     function deletePost(postid, button) {
-
+    
         // Replace button with progress loader
         var progress = $('<img>').attr('src', 'http://www.thestudentroom.co.uk/images/miscellaneous/progress.gif');
         $(button).replaceWith(progress);
         button = progress;
-
+        
         jQuery('<div>')
             .load('http://www.thestudentroom.co.uk/showthread.php?p=' + postid + ' [name="securitytoken"]',
             function () {
-
+                
                 // Check if thread is closed (i.e. there's no security token)
                 if (this.children[0] === undefined) {
                     $(button).replaceWith($('<button>').css('color','red').text('Closed').prop('disabled',true));
                     return;
                 };
-
+                
                 // Delete the post
                 var securitytoken = this.children[0].value;
                 jQuery.post(
@@ -165,44 +165,44 @@ Finally, we add a button to delete all posts on a results page and make the sing
                     function (doc) {
                         // doc can either be a string (of a full html page) or an object (of an xml response).
                         // These help differentiate what happened to our request.
-
+                        
                         if (typeof doc === "string" &&
                                 doc.indexOf('post_' + postid) !== -1) {
                             // Not sure what happened, failed to delete for some reason
                             $(button).replaceWith($('<button>').css('color','red').text('!').prop('disabled',true));
-                            
+                        
                         } else if (typeof doc === "string") {
                             // Assume we did delete
                             $(button).parent().parent().fadeOut();
-                            
+                        
                         } else if (typeof doc === "object" &&
                                 doc.childNodes[0].textContent.indexOf("Invalid Post specified.") > -1) {
                             // Already deleted
                             $(button).parent().parent().fadeOut();
-                            
+                        
                         } else if (typeof doc === "object" &&
                                 doc.childNodes[0].textContent.indexOf("you do not have permission") > -1) {
                             // No permission for some reason
                             $(button).replaceWith($('<button>').css('color','red')
                                 .text('No permission').prop('disabled',true));
-                                
+                        
                         } else {
                             alert("Unknown error, report post to Chrosson");
-                            
-                        }
                         
+                        }
+                    
                     }
                 );
             });
     }
-
+    
     // Create individual buttons for each post on a page.
     $('#search_results a[href^="showthread"]').before(function () {
         var postid = this.href.match(/p=([0-9]+)/)[1];
         return $('<button>').text('X').addClass('postDelete').click(function () { deletePost(postid, this); })
             .css('paddingLeft', '10px').css('paddingRight', '10px');
     });
-
+    
     // Make a 'delete all' button.
     $('#search_results_sort').after(
         $('<button>').text('Delete All').css('paddingLeft', '10px').css('paddingRight', '10px')
