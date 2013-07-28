@@ -88,20 +88,29 @@ We don't really get much information on whether it fails or succeeds. Let's make
                     '&deletepost=delete&reason=areallygoodreason&securitytoken=' + securitytoken,
                     function (doc) {
 
-                        if (typeof doc === "string" && doc.indexOf('post_' + postid) !== -1) {
+                        if (typeof doc === "string" &&
+                                doc.indexOf('post_' + postid) !== -1) {
                             // Not sure what happened, failed to delete for some reason
                             $(button).replaceWith($('<button>').css('color','red').text('!').prop('disabled',true));
+                            
                         } else if (typeof doc === "string") {
                             // Assume we did delete
                             $(button).parent().parent().fadeOut();
-                        } else if (typeof doc === "object" && doc.childNodes[0].textContent.indexOf("Invalid Post specified.") > -1) {
+                            
+                        } else if (typeof doc === "object" &&
+                                doc.childNodes[0].textContent.indexOf("Invalid Post specified.") > -1) {
                             // Already deleted
                             $(button).parent().parent().fadeOut();
-                        } else if (typeof doc === "object" && doc.childNodes[0].textContent.indexOf("you do not have permission") > -1) {
+                            
+                        } else if (typeof doc === "object" &&
+                                doc.childNodes[0].textContent.indexOf("you do not have permission") > -1) {
                             // No permission for some reason
-                            $(button).replaceWith($('<button>').css('color','red').text('No permission').prop('disabled',true));
+                            $(button).replaceWith($('<button>').css('color','red')
+                                .text('No permission').prop('disabled',true));
+                        
                         } else {
                             alert("Unknown error, report post to Chrosson");
+                            
                         }
                         
                     }
@@ -159,20 +168,29 @@ Finally, we add a button to delete all posts on a results page and make the sing
                         // doc can either be a string (of a full html page) or an object (of an xml response).
                         // These help differentiate what happened to our request.
 
-                        if (typeof doc === "string" && doc.indexOf('post_' + postid) !== -1) {
+                        if (typeof doc === "string" &&
+                                doc.indexOf('post_' + postid) !== -1) {
                             // Not sure what happened, failed to delete for some reason
                             $(button).replaceWith($('<button>').css('color','red').text('!').prop('disabled',true));
+                            
                         } else if (typeof doc === "string") {
                             // Assume we did delete
                             $(button).parent().parent().fadeOut();
-                        } else if (typeof doc === "object" && doc.childNodes[0].textContent.indexOf("Invalid Post specified.") > -1) {
+                            
+                        } else if (typeof doc === "object" &&
+                                doc.childNodes[0].textContent.indexOf("Invalid Post specified.") > -1) {
                             // Already deleted
                             $(button).parent().parent().fadeOut();
-                        } else if (typeof doc === "object" && doc.childNodes[0].textContent.indexOf("you do not have permission") > -1) {
+                            
+                        } else if (typeof doc === "object" &&
+                                doc.childNodes[0].textContent.indexOf("you do not have permission") > -1) {
                             // No permission for some reason
-                            $(button).replaceWith($('<button>').css('color','red').text('No permission').prop('disabled',true));
+                            $(button).replaceWith($('<button>').css('color','red')
+                                .text('No permission').prop('disabled',true));
+                                
                         } else {
                             alert("Unknown error, report post to Chrosson");
+                            
                         }
                         
                     }
@@ -180,12 +198,14 @@ Finally, we add a button to delete all posts on a results page and make the sing
             });
     }
 
+    // Create individual buttons for each post on a page.
     $('#search_results a[href^="showthread"]').before(function () {
         var postid = this.href.match(/p=([0-9]+)/)[1];
         return $('<button>').text('X').addClass('postDelete').click(function () { deletePost(postid, this); })
             .css('paddingLeft', '10px').css('paddingRight', '10px');
     });
 
+    // Make a 'delete all' button.
     $('#search_results_sort').after(
         $('<button>').text('Delete All').css('paddingLeft', '10px').css('paddingRight', '10px')
             .click(function () { this.disabled = true; $('.postDelete').click(); })
