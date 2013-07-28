@@ -134,6 +134,7 @@ Note how the script has exploded in size. Error checking is sadly one of the har
 
 Finally, we add a button to delete all posts on a results page and make the single deletion buttons easier to click and end up with out final userscript. Note how we've added a class to make selection of our post deletion buttons easier when we go through each one to click it. I've also added a few comments in to clarify bits of the code
 
+{% highlight js %}
     // ==UserScript==
     // @name           TSR Post Deleter
     // @author         Chrosson
@@ -219,3 +220,4 @@ Finally, we add a button to delete all posts on a results page and make the sing
         $('<button>').text('Delete All').css('paddingLeft', '10px').css('paddingRight', '10px')
             .click(function () { this.disabled = true; $('.postDelete').click(); })
     );
+{% endhighlight %}
