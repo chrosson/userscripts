@@ -56,7 +56,7 @@
     <div class="strmln-post-forums">
       <div category-hover="strmln-forum-{{post.forum.id}}"
            ng-repeat="post in posts | limitTo:limit | uniqueCount:'forum.id' | orderBy:['-count','+forum.title']">
-        {{post.count}} - <a href="{{post.forum.url}}">{{post.forum.title}}</a>
+        {{post.count}} - <a href="http://www.thestudentroom.co.uk/forumdisplay.php?f={{post.forum.id}}">{{post.forum.title}}</a>
       </div>
     </div>
   </div>
@@ -269,8 +269,7 @@
             $scope.forums[forumId] = {
               id: forumId,
               name: snakeCase(item.forum_name),
-              title: item.forum_name,
-              url: "http://www.thestudentroom.co.uk/forumdisplay.php?f=" + forumId
+              title: item.forum_name
             };
           }
           var date = new Date(item.timestamp * 1000);
