@@ -40,7 +40,9 @@
       Limit: <input type="range" min="0" max="{{posts.length}}" ng-model="limit">
     </div>
     <div class="strmln-post-tiles">
-      <div class="strmln-post-tile strmln-forum-{{post.forum.id}}"
+      <div class="strmln-post-tile"
+           ng-class="'strmln-forum-' + post.forum.id"
+           ng-animate="'slide'"
            ng-repeat="post in posts | limitTo:limit"
            ng-style="forumStyle(post.forum)">
         <div class="strmln-post-tile-content">
@@ -92,6 +94,7 @@
 
 .strmln-post-tile {
   position: relative;
+  float: left;
   width: 100px; height: 100px;
   display: inline-block;
   margin: 3px;
@@ -102,6 +105,25 @@
 .strmln-post-tile-content {
   position: absolute; height: 100%; width: 100%; overflow: hidden;
 }
+
+
+
+.slide-enter, .slide-move, .slide-leave {
+  -webkit-transition: 1s linear all;
+  -moz-transition: 1s linear all;
+  -o-transition: 1s linear all;
+  transition: 1s linear all;
+}
+
+.slide-move { opacity: 0; color: blue; }
+.slide-move.slide-move-active { opacity: 1; color: red; }
+
+.slide-enter { opacity: 0; width: 0; }
+.slide-enter.slide-enter-active { opacity: 1; width: 100px; }
+
+.slide-leave { opacity: 1; }
+.slide-leave.slide-leave-active { opacity: 0; width: 0; }
+
 
 *************RESOURCE_END*************
 
