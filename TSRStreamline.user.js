@@ -177,6 +177,7 @@
   // http://jsfiddle.net/ItsLeeOwen/HFWEp/ - switching between html fragment templates
 
   // http://stackoverflow.com/questions/15114942/angular-js-fire-off-two-async-service-calls-then-perform-action-after-both-have
+  // http://www.adobe.com/devnet/html5/articles/angularjs-directives-and-the-computer-science-of-javascript.html
 
   // http://stackoverflow.com/questions/13937318/convert-angular-http-get-function-to-a-service
   // http://stackoverflow.com/questions/15666048/angular-js-service-vs-provide-vs-factory
@@ -185,6 +186,16 @@
   // http://onehungrymind.com/angularjs-directives-basics/
   // http://www.codinginsight.com/angularjs-directives/
   // http://docs.angularjs.org/guide/directive
+
+  // http://www.nganimate.org/angularjs/ng-repeat/appear
+  // http://code.angularjs.org/1.1.5/docs/api/ng.directive:ngAnimate
+  // http://www.yearofmoo.com/2013/04/animation-in-angularjs.html
+  // http://onehungrymind.com/ng-animate-first-look-with-angularjs-wizard/
+
+  // Angular with masonry
+  // http://jsfiddle.net/kstep/j25aj/9/ or http://jsfiddle.net/j25aj/12/
+  // http://plnkr.co/edit/dmuGHCNTCBBuYpjyKQ8E?p=preview
+  // http://stackoverflow.com/questions/16504151/masonry-with-angularjs
 
   var app = angular.module('streamline', []);
 
