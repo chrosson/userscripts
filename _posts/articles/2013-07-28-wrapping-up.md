@@ -35,9 +35,9 @@ We clearly don't want to run on any old page, so lets change the include line to
 
 Now, let's look at the meat of the userscript. If you remember the first lesson, we found we could get all of the result links with `$('#search_results a[href^="showthread"]')`. Let's start out by adding a button in front of each result link, and it just so happens that jQuery provides a method called `before`. So, let's replace our alert with
 
-$('#search_results a[href^="showthread"]').before(function () {
-    return $('<button>').text('X');
-});
+    $('#search_results a[href^="showthread"]').before(function () {
+        return $('<button>').text('X');
+    });
 
 The function passed to `before` is called for each item and returns the thing that we want inserting. In this case, a button with the text 'X'. Not very exciting. In order to get to our final goal of deleting posts, we need to get the post id. As the `this` variable refers to the element we found, we can extract the post id from the `href` attribute - i.e. where the link points to. Let's try the following line:
 
@@ -45,24 +45,24 @@ The function passed to `before` is called for each item and returns the thing th
 
 The above uses a mysterious tool known as regular expressions which are designed for matching and extracting bits of information out of strings. Simply speaking we're obtaining the number following the `p=` in the link. If you save that and refresh the search page you'll see all the post ids listed. Excellent! Let's pull in the work we did in the last lesson and make this body:
 
-function deletePost(postid) {
-    jQuery('<div>')
-        .load('http://www.thestudentroom.co.uk/showthread.php?p=' + postid + ' [name="securitytoken"]',
-        function () {
-            var securitytoken = this.children[0].value;
-            jQuery.post(
-                'http://www.thestudentroom.co.uk/editpost.php',
-                'do=deletepost&s=&postid=' + postid +
-                '&deletepost=delete&reason=areallygoodreason&securitytoken=' + securitytoken,
-                function () { alert('deleted'); }
-            );
-        });
-}
+    function deletePost(postid) {
+        jQuery('<div>')
+            .load('http://www.thestudentroom.co.uk/showthread.php?p=' + postid + ' [name="securitytoken"]',
+            function () {
+                var securitytoken = this.children[0].value;
+                jQuery.post(
+                    'http://www.thestudentroom.co.uk/editpost.php',
+                    'do=deletepost&s=&postid=' + postid +
+                    '&deletepost=delete&reason=areallygoodreason&securitytoken=' + securitytoken,
+                    function () { alert('deleted'); }
+                );
+            });
+    }
 
-$('#search_results a[href^="showthread"]').before(function () {
-    var postid = this.href.match(/p=([0-9]+)/)[1];
-    return $('<button>').text('X').click(function () { deletePost(postid); });
-});
+    $('#search_results a[href^="showthread"]').before(function () {
+        var postid = this.href.match(/p=([0-9]+)/)[1];
+        return $('<button>').text('X').click(function () { deletePost(postid); });
+    });
 
 Congratulations, we can delete posts individually!
 
@@ -114,17 +114,31 @@ We don't really get much information on whether it fails or succeeds. Let's make
         return $('<button>').text('X').click(function () { deletePost(postid, this); });
     });
 
-Note how the script has exploded in size. Error checking is sadly one of the hardest parts of writing a userscript. Let's make it a bit prettier by adding a progress spinner while we're waiting for deletion. Just add the following code right at the top of the deletePost function
+Note how the script has exploded in size. Error checking is sadly one of the hardest parts of writing a userscript. Let's make it a bit prettier by adding a progress spinner while we're waiting for deletion. Just add the following code right at the top of the deletePost function to, as the first step, replace the initial button with a progress spinner.
 
+    var progress = $('<img>').attr('src', 'http://www.thestudentroom.co.uk/images/miscellaneous/progress.gif');
+    $(button).replaceWith(progress);
+    button = progress;
 
+Finally, we add a button to delete all posts on a results page and make the single deletion buttons easier to click and end up with out final userscript. Note how we've added a class to make selection of our post deletion buttons easier when we go through each one to click it. I've also added a few comments in to clarify bits of the code
 
-
-
-
-
-
+    // ==UserScript==
+    // @name           TSR Post Deleter
+    // @author         Chrosson
+    // @version        0.1
+    // @description    Delete posts
+    // @include        http*://www.thestudentroom.co.uk/*
+    // @copyright      2013+, Chrosson
+    // @namespace      http://www.thestudentroom.co.uk/member.php?u=334116
+    // ==/UserScript==
 
     function deletePost(postid, button) {
+
+        // Replace button with progress loader
+        var progress = $('<img>').attr('src', 'http://www.thestudentroom.co.uk/images/miscellaneous/progress.gif');
+        $(button).replaceWith(progress);
+        button = progress;
+
         jQuery('<div>')
             .load('http://www.thestudentroom.co.uk/showthread.php?p=' + postid + ' [name="securitytoken"]',
             function () {
@@ -142,6 +156,8 @@ Note how the script has exploded in size. Error checking is sadly one of the har
                     'do=deletepost&s=&postid=' + postid +
                     '&deletepost=delete&reason=areallygoodreason&securitytoken=' + securitytoken,
                     function (doc) {
+                        // doc can either be a string (of a full html page) or an object (of an xml response).
+                        // These help differentiate what happened to our request.
 
                         if (typeof doc === "string" && doc.indexOf('post_' + postid) !== -1) {
                             // Not sure what happened, failed to delete for some reason
@@ -166,8 +182,11 @@ Note how the script has exploded in size. Error checking is sadly one of the har
 
     $('#search_results a[href^="showthread"]').before(function () {
         var postid = this.href.match(/p=([0-9]+)/)[1];
-        return $('<button>').text('X').click(function () { deletePost(postid, this); });
+        return $('<button>').text('X').addClass('postDelete').click(function () { deletePost(postid, this); })
+            .css('paddingLeft', '10px').css('paddingRight', '10px');
     });
 
-
-
+    $('#search_results_sort').after(
+        $('<button>').text('Delete All').css('paddingLeft', '10px').css('paddingRight', '10px')
+            .click(function () { this.disabled = true; $('.postDelete').click(); })
+    );
