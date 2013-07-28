@@ -171,7 +171,7 @@ Finally, we add a button to delete all posts on a results page and make the sing
                     'do=deletepost&s=&postid=' + postid +
                     '&deletepost=delete&reason=areallygoodreason&securitytoken=' + securitytoken,
                     function (doc) {
-                        // doc can either be a string (of a full html page) or an object (of an xml response).
+                        // doc can either be a string (of a full html page) or an object (of xml).
                         // These help differentiate what happened to our request.
                         
                         if (typeof doc === "string" &&
@@ -209,7 +209,8 @@ Finally, we add a button to delete all posts on a results page and make the sing
     // Create individual buttons for each post on a page.
     $('#search_results a[href^="showthread"]').before(function () {
         var postid = this.href.match(/p=([0-9]+)/)[1];
-        return $('<button>').text('X').addClass('postDelete').click(function () { deletePost(postid, this); })
+        return $('<button>').text('X').addClass('postDelete')
+            .click(function () { deletePost(postid, this); })
             .css('paddingLeft', '10px').css('paddingRight', '10px');
     });
     
