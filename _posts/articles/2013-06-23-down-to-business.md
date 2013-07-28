@@ -1,7 +1,5 @@
 ---
-published: 
-  - true
-  - "true"
+published: true
 layout: article
 title: "Lesson 3 - Down to business"
 abstract: "Enough messing, time to actually do something."
